@@ -29,8 +29,6 @@ void CW::GUI::Attach(StudentRegistry* registry)
 
 	io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	io->IniFilename = "config.ini";
-
-	//AdmissionPanel admissionPanel;
 }
 
 void CW::GUI::Detach()
@@ -143,8 +141,10 @@ void CW::GUI::MainMenuBar()
 		{
 			if (ImGui::MenuItem("Exit"))
 			{
-				//exit(0);
-				glfwSetWindowShouldClose(m_Window, 1);
+				if (CW::MessageBox::Open("Any unsaved progress will be lost!!", "Do you want to exit", MB_OKCANCEL | MB_ICONQUESTION) == 1)
+				{
+					glfwSetWindowShouldClose(m_Window, 1);
+				}
 			}
 			ImGui::EndMenu();
 		}
@@ -154,17 +154,33 @@ void CW::GUI::MainMenuBar()
 			{
 				ImGui::StyleColorsLight();
 			}
-			if (ImGui::MenuItem("Dark"))
+			if (ImGui::MenuItem("Dark 1"))
 			{
 				ImGui::StyleColorsDark();
+			}
+			if (ImGui::MenuItem("Dark 2"))
+			{
+				SetDarkThemeColors();
 			}
 			if (ImGui::MenuItem("Classic"))
 			{
 				ImGui::StyleColorsClassic();
 			}
-			if (ImGui::MenuItem("Custom"))
+			
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("View"))
+		{
+
+		}
+		if (ImGui::BeginMenu("Tools"))
+		{
+			if (ImGui::MenuItem("Fill Random Data"))
 			{
-				SetDarkThemeColors();
+				m_Registry->Class09.FillWithRandomStudents();
+				m_Registry->Class10.FillWithRandomStudents();
+				m_Registry->Class11.FillWithRandomStudents();
+				m_Registry->Class12.FillWithRandomStudents();
 			}
 			ImGui::EndMenu();
 		}
@@ -350,6 +366,6 @@ void CW::GUI::DrawTable(int _class)
 	}
 	if (ImGui::Button("Upload To Cloud"))
 	{
-
+		CW::MessageBox::Open("All the data will be uploaded to local database.", "Do you want to upload to database ?", MB_YESNO);
 	}
 }

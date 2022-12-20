@@ -66,6 +66,9 @@
     <ClCompile Include="Source\UserInterface\AdmissionPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Windows\MessageBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Headers\Core\Application.h">
@@ -129,6 +132,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\UserInterface\AdmissionPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Windows\MessageBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

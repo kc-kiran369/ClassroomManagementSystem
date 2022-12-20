@@ -9,6 +9,7 @@
 
 #include"Data/StudentRegistry.h"
 #include"AdmissionPanel.h"
+#include"Windows/MessageBox.h"
 
 namespace CW
 {

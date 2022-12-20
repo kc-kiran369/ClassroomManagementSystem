@@ -4,6 +4,27 @@
 #include<iostream>
 #include<vector>
 #include"Student.h"
+#include"Windows/MessageBox.h"
+
+class FillRandom
+{
+private:
+	std::string m_TmpName;
+public:
+	int RandInt(int low, int high)
+	{
+		return low + rand() % (high - low + 1);
+	}
+	std::string GetRandomText(int length)
+	{
+		m_TmpName.clear();
+		for (int i = 0; i < length; i++)
+		{
+			m_TmpName += RandInt('a', 'z');
+		}
+		return m_TmpName;
+	}
+};
 
 class ClassRegistry
 {
@@ -13,12 +34,16 @@ public:
 	static int MaxStudents;
 
 	ClassRegistry();
-	void AddStudent(std::string name, int roll, std::string address);
+	bool AddStudent(std::string name, int roll, std::string address);
 	void RemoveStudent();
 
 	Student GetStudentAt(int index);
 
 	unsigned int GetTotalStudents();
+
+	void FillWithRandomStudents();
+
+	bool HasRollNo(int roll);
 };
 
 #endif

@@ -184,6 +184,7 @@
     <ClCompile Include="Source\UserInterface\AdmissionPanel.cpp" />
     <ClCompile Include="Source\UserInterface\GUI.cpp" />
     <ClCompile Include="Source\UserInterface\StudentsPanel.cpp" />
+    <ClCompile Include="Source\Windows\MessageBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\imgui\imconfig.h" />
@@ -205,6 +206,7 @@
     <ClInclude Include="Headers\UserInterface\AdmissionPanel.h" />
     <ClInclude Include="Headers\UserInterface\GUI.h" />
     <ClInclude Include="Headers\UserInterface\StudentsPanel.h" />
+    <ClInclude Include="Headers\Windows\MessageBox.h" />
     <ClInclude Include="Source\Headers\Core\Application.h" />
     <ClInclude Include="Source\Headers\Core\Window.h" />
   </ItemGroup>
