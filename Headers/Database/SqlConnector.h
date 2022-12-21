@@ -1,12 +1,15 @@
-#ifndef SQL_CONNECTOR
-#define SQL_CONNECTOR
+#ifndef SQL_CONNECTOR_H
+#define SQL_CONNECTOR_H
 
-class SqlConnector
+namespace cms::database
 {
-private:
-public:
-	SqlConnector();
-	~SqlConnector();
-};
+	class SqlConnector
+	{
+	private:
+	public:
+		SqlConnector();
+		~SqlConnector();
+	};
+}
 
 #endif

@@ -1,18 +1,23 @@
 #include"Core/Application.h"
 
-CW::Application::Application(const char* ApplicationName, int width, int height)
+cms::Application::Application(const char* ApplicationName, int width, int height)
 {
-	m_Window = new Window("Classroom Management (64-bit, windows)", width, height);
+	m_Window = new Window(ApplicationName, width, height);
 	m_UserInterface = new GUI(m_Window->GetWindow());
+	std::cout << "Application Init : \n";
+	std::cout << "\tApp_Name : " << ApplicationName << "\n";
+	std::cout << "\tApp_Window_Width : " << width << "\n";
+	std::cout << "\tApp_Window_Height : " << height << "\n";
 }
 
-CW::Application::~Application()
+cms::Application::~Application()
 {
 	delete m_Window;
 	delete m_UserInterface;
+	std::cout << "Application Out Of Scope\n";
 }
 
-void CW::Application::Run()
+void cms::Application::Run()
 {
 	m_Window->Attach();
 	std::unique_ptr<StudentRegistry> registry = std::make_unique<StudentRegistry>();
@@ -29,21 +34,10 @@ void CW::Application::Run()
 	m_Window->Detach();
 }
 
-void CW::Application::Attach()
-{
+void cms::Application::Attach() {}
 
-}
+void cms::Application::Detach() {}
 
-void CW::Application::Detach()
-{
-}
+void cms::Application::OnUpdate() {}
 
-void CW::Application::OnUpdate()
-{
-
-}
-
-void CW::Application::OnUpdateComplete()
-{
-
-}
+void cms::Application::OnUpdateComplete() {}

@@ -1,6 +1,7 @@
-#pragma once
+#ifndef LAYER_H
+#define LAYER_H
 
-namespace CW
+namespace cms
 {
 	class Layer
 	{
@@ -11,3 +12,5 @@ namespace CW
 		virtual void OnUpdateComplete() = 0;
 	};
 }
+
+#endif

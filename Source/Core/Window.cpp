@@ -1,6 +1,6 @@
 #include"Core/Window.h"
 
-CW::Window::Window(const char* AppName, int width, int height)
+cms::Window::Window(const char* AppName, int width, int height)
 {
 	glfwInit();
 	m_Window = glfwCreateWindow(width, height, AppName, nullptr, nullptr);
@@ -8,11 +8,11 @@ CW::Window::Window(const char* AppName, int width, int height)
 	m_Height = height;
 }
 
-CW::Window::~Window()
+cms::Window::~Window()
 {
 }
 
-void CW::Window::Attach()
+void cms::Window::Attach()
 {
 	glfwMakeContextCurrent(m_Window);
 	glfwSwapInterval(1);
@@ -23,24 +23,29 @@ void CW::Window::Attach()
 
 }
 
-void CW::Window::Detach()
+void cms::Window::Detach()
 {
 	glfwTerminate();
 }
 
-void CW::Window::OnUpdate()
+void cms::Window::OnUpdate()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 }
 
-void CW::Window::OnUpdateComplete()
+void cms::Window::OnUpdateComplete()
 {
 	glfwPollEvents();
 	glfwSwapBuffers(m_Window);
 }
 
-GLFWwindow* CW::Window::GetWindow()
+GLFWwindow* cms::Window::GetWindow()
 {
 	return m_Window;
+}
+
+void cms::Window::ToggleSystemConsole()
+{
+	ShowWindow(GetConsoleWindow(), (IsWindowVisible(GetConsoleWindow()) ? SW_HIDE : SW_SHOW));
 }

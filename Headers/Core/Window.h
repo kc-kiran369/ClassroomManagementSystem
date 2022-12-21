@@ -1,10 +1,14 @@
+#ifndef WINDOW_CW_H
+#define WINDOW_CW_H
+
 #include<iostream>
+#include<Windows.h>
 #include"Layer.h"
 #include<glfw/glfw3.h>
 
-namespace CW
+namespace cms
 {
-	class Window : public Layer
+	class Window : public cms::Layer
 	{
 	private:
 		GLFWwindow* m_Window;
@@ -17,6 +21,9 @@ namespace CW
 		void Detach();
 		void OnUpdate();
 		void OnUpdateComplete();
+		static void ToggleSystemConsole();
 		GLFWwindow* GetWindow();
 	};
 }
+
+#endif

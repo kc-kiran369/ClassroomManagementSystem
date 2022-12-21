@@ -1,5 +1,7 @@
 #include"Data/Student.h"
 
+using namespace cms;
+
 Student::Student(std::string name, int roll, std::string address)
 {
 	m_Name = name;

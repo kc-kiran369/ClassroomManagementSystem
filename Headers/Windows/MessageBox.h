@@ -4,8 +4,7 @@
 #include <Windows.h>
 #include<WinUser.h>
 
-
-namespace CW
+namespace cms
 {
 	class MessageBox
 	{

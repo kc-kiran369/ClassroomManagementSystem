@@ -3,18 +3,21 @@
 
 #include<iostream>
 
-class Student
+namespace cms
 {
-private:
-	std::string m_Name,m_Address;
-	int m_RollNo;
-public:
-	Student(std::string name, int roll, std::string address);
-	~Student();
+	class Student
+	{
+	private:
+		std::string m_Name, m_Address;
+		int m_RollNo;
+	public:
+		Student(std::string name, int roll, std::string address);
+		~Student();
 
-	std::string GetName();
-	std::string GetAddress();
-	int GetRoll();
-};
+		std::string GetName();
+		std::string GetAddress();
+		int GetRoll();
+	};
+}
 
-#endif // !STUDENT_H
+#endif

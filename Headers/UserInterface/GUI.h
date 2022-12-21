@@ -1,17 +1,20 @@
-#pragma once
+#ifndef GUI_LAYER_H
+#define GUI_LAYER_H
 
 #include<iostream>
 #include"glfw/glfw3.h"
-#include"Core/Layer.h"
+
 #include"imgui/imgui.h"
 #include"ImGUI/imgui_impl_glfw.h"
 #include"ImGUI/imgui_impl_opengl3.h"
 
+#include"Core/Layer.h"
 #include"Data/StudentRegistry.h"
 #include"AdmissionPanel.h"
 #include"Windows/MessageBox.h"
+#include"Core/Window.h"
 
-namespace CW
+namespace cms
 {
 	class GUI : public Layer
 	{
@@ -32,6 +35,7 @@ namespace CW
 		void StudentsPanel();
 		//void AdmissionPanel();
 		void SettingsPanel();
+		void Style();
 
 		void DrawTable(int _class);
 	public:
@@ -45,6 +49,11 @@ namespace CW
 		void OnUpdateComplete();
 
 		void RenderUIElements();
-		void SetDarkThemeColors();
+
+		void SetDarkTheme();
+		void SetGreenTheme();
+		void SetRedTheme();
 	};
 }
+
+#endif

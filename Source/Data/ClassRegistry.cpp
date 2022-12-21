@@ -1,5 +1,7 @@
 #include"Data/ClassRegistry.h"
 
+using namespace cms;
+
 int ClassRegistry::MaxStudents = 48;
 
 ClassRegistry::ClassRegistry()
@@ -11,11 +13,11 @@ bool ClassRegistry::AddStudent(std::string name, int roll, std::string address)
 {
 	if (GetTotalStudents() > 48)
 	{
-		CW::MessageBox::Open("More than 48 students cannot be admitted", "Maximum students reached", MB_OK | MB_ICONWARNING);
+		cms::MessageBox::Open("More than 48 students cannot be admitted", "Maximum students reached", MB_OK | MB_ICONWARNING);
 	}
 	else if (HasRollNo(roll))
 	{
-		CW::MessageBox::Open("Student with given roll number already exists", "Roll number exists!!", MB_OK | MB_ICONEXCLAMATION);
+		cms::MessageBox::Open("Student with given roll number already exists", "Roll number exists!!", MB_OK | MB_ICONEXCLAMATION);
 	}
 	else
 	{
@@ -48,9 +50,12 @@ void ClassRegistry::FillWithRandomStudents()
 	int _totalStudentsInThisClass = random.RandInt(35, MaxStudents);
 	for (int i = 0; i < _totalStudentsInThisClass; i++)
 	{
-		for (int j = 1; j <= _totalStudentsInThisClass; j++)
+		//This loop is to assign roll number
+		for (int j = _totalStudentsInThisClass; j >= 1; j--)
 		{
-			if (!HasRollNo(j))
+			if (HasRollNo(j))
+				continue;
+			else
 				_roll = j;
 		}
 		AddStudent(random.GetRandomText(random.RandInt(4, 7)), _roll, random.GetRandomText(random.RandInt(4, 12)));
@@ -59,7 +64,7 @@ void ClassRegistry::FillWithRandomStudents()
 
 bool ClassRegistry::HasRollNo(int roll)
 {
-	for (Student student : m_Students)
+	for (Student& student : m_Students)
 	{
 		if (student.GetRoll() == roll)
 			return true;

@@ -7,7 +7,7 @@
 #include"UserInterface/GUI.h"
 #include"Data/StudentRegistry.h"
 
-namespace CW
+namespace cms
 {
 	class Application : public Layer
 	{
@@ -24,4 +24,5 @@ namespace CW
 		void OnUpdateComplete();
 	};
 }
-#endif // !APP_H
+
+#endif

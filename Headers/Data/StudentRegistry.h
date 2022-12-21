@@ -5,17 +5,20 @@
 #include<vector>
 #include"ClassRegistry.h"
 
-class StudentRegistry
+namespace cms
 {
-public:
-	StudentRegistry();
-	~StudentRegistry();
-	ClassRegistry Class09;
-	ClassRegistry Class10;
-	ClassRegistry Class11;
-	ClassRegistry Class12;
+	class StudentRegistry
+	{
+	public:
+		StudentRegistry();
+		~StudentRegistry();
+		ClassRegistry Class09;
+		ClassRegistry Class10;
+		ClassRegistry Class11;
+		ClassRegistry Class12;
 
-	unsigned int GetTotalStudents();
-};
+		unsigned int GetTotalStudents();
+	};
+}
 
 #endif

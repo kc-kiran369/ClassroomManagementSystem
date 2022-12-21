@@ -1,6 +1,6 @@
 #include"Windows/MessageBox.h"
 
-namespace CW
+namespace cms
 {
 
 	int MessageBox::Open(const char* description, const char* title, unsigned int type)
