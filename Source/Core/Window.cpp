@@ -10,6 +10,7 @@ cms::Window::Window(const char* AppName, int width, int height)
 
 cms::Window::~Window()
 {
+
 }
 
 void cms::Window::Attach()
@@ -21,6 +22,7 @@ void cms::Window::Attach()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+	ToggleSystemConsole();
 }
 
 void cms::Window::Detach()

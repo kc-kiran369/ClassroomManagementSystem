@@ -13,18 +13,20 @@
 #include"AdmissionPanel.h"
 #include"Windows/MessageBox.h"
 #include"Core/Window.h"
+#include"Core/Serializer.h"
 
 namespace cms
 {
 	class GUI : public Layer
 	{
 	private:
+		float m_UIScale = 1.0f;
+
 		GLFWwindow* m_Window;
 
 		ImGuiIO* io;
 		ImGuiStyle* style;
 		ImVec4* colors;
-
 		StudentRegistry* m_Registry;
 		AdmissionPanel admissionPanel;
 

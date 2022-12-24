@@ -29,7 +29,7 @@ void cms::GUI::Attach(StudentRegistry* registry)
 	Style();
 
 	io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-	io->IniFilename = "config.ini";
+	io->IniFilename = "config_ui.ini";
 }
 
 void cms::GUI::Detach()
@@ -326,18 +326,31 @@ void cms::GUI::Inspector()
 	{
 		if (ImGui::Button("Dashboard", ImVec2{ ImGui::GetColumnWidth(),40.0f }))
 		{
+			ImGui::SetWindowFocus("Dashboard");
 		}
-		if (ImGui::Button("Attendance", ImVec2{ ImGui::GetColumnWidth(),40.0f })) {}
-		if (ImGui::Button("Students", ImVec2{ ImGui::GetColumnWidth(),40.0f })) {}
-		if (ImGui::Button("Admission", ImVec2{ ImGui::GetColumnWidth(),40.0f })) {}
-		if (ImGui::Button("Settings", ImVec2{ ImGui::GetColumnWidth(),40.0f })) {}
+		if (ImGui::Button("Attendance", ImVec2{ ImGui::GetColumnWidth(),40.0f }))
+		{
+			ImGui::SetWindowFocus("Attendance");
+		}
+		if (ImGui::Button("Students", ImVec2{ ImGui::GetColumnWidth(),40.0f }))
+		{
+			ImGui::SetWindowFocus("Students");
+		}
+		if (ImGui::Button("Admission", ImVec2{ ImGui::GetColumnWidth(),40.0f }))
+		{
+			ImGui::SetWindowFocus("Admission");
+		}
+		if (ImGui::Button("Settings", ImVec2{ ImGui::GetColumnWidth(),40.0f }))
+		{
+			ImGui::SetWindowFocus("Settings");
+		}
 		ImGui::End();
 	}
-	if (ImGui::Begin("Debug"))
+	/*if (ImGui::Begin("Debug"))
 	{
 		ImGui::ShowStyleEditor();
 		ImGui::End();
-	}
+	}*/
 }
 
 void cms::GUI::DashboardPanel()
@@ -356,8 +369,10 @@ void cms::GUI::DashboardPanel()
 			ImGui::PlotHistogram("Stds", values, 4, 0, "Total Students", 0, 50.0f, ImVec2{ ImGui::GetWindowWidth(),ImGui::GetWindowHeight() }, 4);
 			ImGui::EndChildFrame();
 		}
+		ImGui::PopStyleVar();
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 10,10 });
 		ImGui::SameLine();
-		if (ImGui::BeginChildFrame(3, ImVec2{ 300,250 }, ImGuiWindowFlags_NoScrollbar))
+		if (ImGui::BeginChildFrame(3, ImVec2{ 300,250 }, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysUseWindowPadding))
 		{
 			ImGui::Text("Total Students : %d", m_Registry->GetTotalStudents());
 			ImGui::Text("Class 9 : %d", m_Registry->Class09.GetTotalStudents());
@@ -417,6 +432,10 @@ void cms::GUI::SettingsPanel()
 	if (ImGui::Begin("Settings"))
 	{
 
+		if (ImGui::SliderFloat("UI Scale", &m_UIScale, 1.0f, 2.0f, "%.2f"))
+		{
+			io->FontGlobalScale = m_UIScale;
+		}
 		ImGui::End();
 	}
 }
