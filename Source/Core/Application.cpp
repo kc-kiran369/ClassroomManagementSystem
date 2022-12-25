@@ -1,5 +1,7 @@
 #include"Core/Application.h"
 
+using namespace cms;
+
 cms::Application::Application(const char* ApplicationName, int width, int height)
 {
 	m_Window = new Window(ApplicationName, width, height);
@@ -27,6 +29,7 @@ void cms::Application::Run()
 	{
 		m_Window->OnUpdate();
 		m_UserInterface->OnUpdate();
+
 		m_UserInterface->OnUpdateComplete();
 		m_Window->OnUpdateComplete();
 	}

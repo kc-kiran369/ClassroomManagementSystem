@@ -17,6 +17,7 @@ void cms::GUI::Attach()
 void cms::GUI::Attach(StudentRegistry* registry)
 {
 	m_Registry = registry;
+
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
@@ -30,6 +31,10 @@ void cms::GUI::Attach(StudentRegistry* registry)
 
 	io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	io->IniFilename = "config_ui.ini";
+
+	float tmpScale = Serializer::Instance().GetFloat("ui_scale");
+	io->FontGlobalScale = tmpScale;
+	m_UIScale = tmpScale;
 }
 
 void cms::GUI::Detach()
@@ -346,179 +351,127 @@ void cms::GUI::Inspector()
 		}
 		ImGui::End();
 	}
-	/*if (ImGui::Begin("Debug"))
-	{
-		ImGui::ShowStyleEditor();
-		ImGui::End();
-	}*/
 }
 
 void cms::GUI::DashboardPanel()
 {
-	if (ImGui::Begin("Dashboard"))
-	{
-		float values[] = {
-			m_Registry->Class09.GetTotalStudents(),
-			m_Registry->Class10.GetTotalStudents(),
-			m_Registry->Class11.GetTotalStudents(),
-			m_Registry->Class12.GetTotalStudents()
-		};
-		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 0,0 });
-		if (ImGui::BeginChildFrame(1, ImVec2{ ImGui::GetWindowWidth() / 2,250 }, ImGuiWindowFlags_NoScrollbar))
-		{
-			ImGui::PlotHistogram("Stds", values, 4, 0, "Total Students", 0, 50.0f, ImVec2{ ImGui::GetWindowWidth(),ImGui::GetWindowHeight() }, 4);
-			ImGui::EndChildFrame();
-		}
-		ImGui::PopStyleVar();
-		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 10,10 });
-		ImGui::SameLine();
-		if (ImGui::BeginChildFrame(3, ImVec2{ 300,250 }, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysUseWindowPadding))
-		{
-			ImGui::Text("Total Students : %d", m_Registry->GetTotalStudents());
-			ImGui::Text("Class 9 : %d", m_Registry->Class09.GetTotalStudents());
-			ImGui::Text("Class 10 : %d", m_Registry->Class10.GetTotalStudents());
-			ImGui::Text("Class 11 : %d", m_Registry->Class11.GetTotalStudents());
-			ImGui::Text("Class 12 : %d", m_Registry->Class12.GetTotalStudents());
-			ImGui::EndChildFrame();
-		}
-		ImGui::PopStyleVar();
-		ImGui::End();
-	}
+	ImGui::Begin("Dashboard");
+
+	float values[] = {
+		m_Registry->Class09.GetTotalStudents(),
+		m_Registry->Class10.GetTotalStudents(),
+		m_Registry->Class11.GetTotalStudents(),
+		m_Registry->Class12.GetTotalStudents()
+	};
+
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 0,0 });
+
+	ImGui::BeginChildFrame(1, ImVec2{ ImGui::GetWindowWidth() / 2,250 }, ImGuiWindowFlags_NoScrollbar);
+
+	ImGui::PlotHistogram("Stds", values, 4, 0, "Total Students", 0, 50.0f, ImVec2{ ImGui::GetWindowWidth(),ImGui::GetWindowHeight() }, 4);
+	ImGui::EndChildFrame();
+
+	ImGui::PopStyleVar();
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 10,10 });
+	ImGui::SameLine();
+
+	ImGui::BeginChildFrame(3, ImVec2{ 300,250 }, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysUseWindowPadding);
+
+	ImGui::Text("Total Students : %d", m_Registry->GetTotalStudents());
+	ImGui::Text("Class 9 : %d", m_Registry->Class09.GetTotalStudents());
+	ImGui::Text("Class 10 : %d", m_Registry->Class10.GetTotalStudents());
+	ImGui::Text("Class 11 : %d", m_Registry->Class11.GetTotalStudents());
+	ImGui::Text("Class 12 : %d", m_Registry->Class12.GetTotalStudents());
+	ImGui::EndChildFrame();
+
+	ImGui::PopStyleVar();
+	ImGui::End();
 }
 
 void cms::GUI::AttPanel()
 {
-	if (ImGui::Begin("Attendance"))
-	{
+	ImGui::Begin("Attendance");
 
-		ImGui::End();
-	}
+
+	ImGui::End();
 }
 
 void cms::GUI::StudentsPanel()
 {
-	if (ImGui::Begin("Students"))
+	ImGui::Begin("Students");
+
+	if (ImGui::BeginTabBar("Tab", ImGuiTabBarFlags_None))
 	{
-		if (ImGui::BeginTabBar("Tab", ImGuiTabBarFlags_None))
+		if (ImGui::BeginTabItem("Class 9"))
 		{
-			if (ImGui::BeginTabItem("Class 9"))
-			{
-				DrawTable(9);
-				ImGui::EndTabItem();
-			}
-			if (ImGui::BeginTabItem("Class 10"))
-			{
-				DrawTable(10);
-				ImGui::EndTabItem();
-			}
-			if (ImGui::BeginTabItem("Class 11"))
-			{
-				DrawTable(11);
-				ImGui::EndTabItem();
-			}
-			if (ImGui::BeginTabItem("Class 12"))
-			{
-				DrawTable(12);
-				ImGui::EndTabItem();
-			}
-			ImGui::EndTabBar();
+			DrawTable(9);
+			ImGui::EndTabItem();
 		}
-		ImGui::End();
+		if (ImGui::BeginTabItem("Class 10"))
+		{
+			DrawTable(10);
+			ImGui::EndTabItem();
+		}
+		if (ImGui::BeginTabItem("Class 11"))
+		{
+			DrawTable(11);
+			ImGui::EndTabItem();
+		}
+		if (ImGui::BeginTabItem("Class 12"))
+		{
+			DrawTable(12);
+			ImGui::EndTabItem();
+		}
+		ImGui::EndTabBar();
 	}
+	ImGui::End();
 }
 
 void cms::GUI::SettingsPanel()
 {
-	if (ImGui::Begin("Settings"))
-	{
+	ImGui::Begin("Settings");
 
-		if (ImGui::SliderFloat("UI Scale", &m_UIScale, 1.0f, 2.0f, "%.2f"))
-		{
-			io->FontGlobalScale = m_UIScale;
-		}
-		ImGui::End();
+	if (ImGui::SliderFloat("UI Scale", &m_UIScale, 1.0f, 2.0f, "%.2f"))
+	{
+		io->FontGlobalScale = m_UIScale;
 	}
+
+	if (ImGui::Button("Save Settings"))
+	{
+		Serializer::Instance().SetFloat("ui_scale", m_UIScale);
+	}
+
+	ImGui::End();
 }
 
 void cms::GUI::DrawTable(int _class)
 {
-	if (ImGui::BeginTable("Class", 5))
+	ClassRegistry& registry = (_class == 9 ? m_Registry->Class09 : (_class == 10 ? m_Registry->Class10 : (_class == 11 ? m_Registry->Class11 : m_Registry->Class12)));
+	if (ImGui::BeginTable("Class", 4))
 	{
 		ImGui::TableNextRow();
 		ImGui::TableNextColumn();
-		ImGui::Text("SN");
+		ImGui::TableHeader("SN");
 		ImGui::TableNextColumn();
-		ImGui::Text("Name");
+		ImGui::TableHeader("Name");
 		ImGui::TableNextColumn();
-		ImGui::Text("Roll");
+		ImGui::TableHeader("Roll");
 		ImGui::TableNextColumn();
-		ImGui::Text("Address");
-		switch (_class)
+		ImGui::TableHeader("Address");
+
+		for (int row = 0; row < registry.GetTotalStudents(); row++)
 		{
-		case 9:
-			for (int row = 0; row < m_Registry->Class09.GetTotalStudents(); row++)
-			{
-				ImGui::TableNextRow();
-				ImGui::TableNextColumn();
-				ImGui::Text("%d", (row + 1));
-				ImGui::TableNextColumn();
-				ImGui::Text("%s", m_Registry->Class09.GetStudentAt(row).GetName());
-				ImGui::TableNextColumn();
-				ImGui::Text("%d", m_Registry->Class09.GetStudentAt(row).GetRoll());
-				ImGui::TableNextColumn();
-				ImGui::Text("%s", m_Registry->Class09.GetStudentAt(row).GetAddress());
-			}
-			ImGui::EndTable();
-			break;
-
-		case 10:
-			for (int row = 0; row < m_Registry->Class10.GetTotalStudents(); row++)
-			{
-				ImGui::TableNextRow();
-				ImGui::TableNextColumn();
-				ImGui::Text("%d", (row + 1));
-				ImGui::TableNextColumn();
-				ImGui::Text("%s", m_Registry->Class10.GetStudentAt(row).GetName());
-				ImGui::TableNextColumn();
-				ImGui::Text("%d", m_Registry->Class10.GetStudentAt(row).GetRoll());
-				ImGui::TableNextColumn();
-				ImGui::Text("%s", m_Registry->Class10.GetStudentAt(row).GetAddress());
-			}
-			ImGui::EndTable();
-			break;
-
-		case 11:
-			for (int row = 0; row < m_Registry->Class11.GetTotalStudents(); row++)
-			{
-				ImGui::TableNextRow();
-				ImGui::TableNextColumn();
-				ImGui::Text("%d", (row + 1));
-				ImGui::TableNextColumn();
-				ImGui::Text("%s", m_Registry->Class11.GetStudentAt(row).GetName());
-				ImGui::TableNextColumn();
-				ImGui::Text("%d", m_Registry->Class11.GetStudentAt(row).GetRoll());
-				ImGui::TableNextColumn();
-				ImGui::Text("%s", m_Registry->Class11.GetStudentAt(row).GetAddress());
-			}
-			ImGui::EndTable();
-			break;
-
-		case 12:
-			for (int row = 0; row < m_Registry->Class12.GetTotalStudents(); row++)
-			{
-				ImGui::TableNextRow();
-				ImGui::TableNextColumn();
-				ImGui::Text("%d", (row + 1));
-				ImGui::TableNextColumn();
-				ImGui::Text("%s", m_Registry->Class12.GetStudentAt(row).GetName());
-				ImGui::TableNextColumn();
-				ImGui::Text("%d", m_Registry->Class12.GetStudentAt(row).GetRoll());
-				ImGui::TableNextColumn();
-				ImGui::Text("%s", m_Registry->Class12.GetStudentAt(row).GetAddress());
-			}
-			ImGui::EndTable();
-			break;
+			ImGui::TableNextRow();
+			ImGui::TableNextColumn();
+			ImGui::Text("%d", (row + 1));
+			ImGui::TableNextColumn();
+			ImGui::Text("%s", registry.GetStudentAt(row).GetName());
+			ImGui::TableNextColumn();
+			ImGui::Text("%d", registry.GetStudentAt(row).GetRoll());
+			ImGui::TableNextColumn();
+			ImGui::Text("%s", registry.GetStudentAt(row).GetAddress());
 		}
+		ImGui::EndTable();
 	}
 	if (ImGui::Button("Upload To Cloud"))
 	{

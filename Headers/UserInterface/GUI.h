@@ -35,7 +35,6 @@ namespace cms
 		void DashboardPanel();
 		void AttPanel();
 		void StudentsPanel();
-		//void AdmissionPanel();
 		void SettingsPanel();
 		void Style();
 

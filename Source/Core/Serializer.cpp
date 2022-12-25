@@ -2,7 +2,6 @@
 
 Serializer Serializer::instance;
 
-
 //For internal purpose
 std::string Serializer::GetValue(std::string& key)
 {
@@ -23,42 +22,32 @@ std::string Serializer::GetValue(std::string& key)
 int Serializer::GetInt(std::string key)
 {
 	std::string val = GetValue(key);
-	if (val == "NULL")
-	{
-		return VALUE_NOT_FOUND;
-	}
-	else
-	{
-		return std::stoi(val);
-	}
+	return (val == "NULL" ? VALUE_NOT_FOUND : std::stoi(val));
 }
 
 float Serializer::GetFloat(std::string key)
 {
 	std::string val = GetValue(key);
-	if (val == "NULL")
-	{
-		return VALUE_NOT_FOUND;
-	}
-	else
-	{
-		std::stof(val);
-	}
+	return (val == "NULL" ? VALUE_NOT_FOUND : std::stof(val));
 }
 
 std::string Serializer::GetString(std::string key)
 {
-
+	std::string val = GetValue(key);
+	return val;
 }
 
 void Serializer::SetInt(std::string key, int value)
 {
+	
 }
 
-void Serializer::SetString(std::string key, float value)
+void Serializer::SetFloat(std::string key, float value)
 {
+
 }
 
 void Serializer::SetString(std::string key, std::string value)
 {
+
 }

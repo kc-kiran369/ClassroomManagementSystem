@@ -30,7 +30,7 @@ public:
 	std::string GetString(std::string key);
 
 	void SetInt(std::string key, int value);
-	void SetString(std::string key, float value);
+	void SetFloat(std::string key, float value);
 	void SetString(std::string key, std::string value);
 };
 

@@ -17,19 +17,24 @@ bool ClassRegistry::AddStudent(std::string name, int roll, std::string address)
 	}
 	else if (HasRollNo(roll))
 	{
-		cms::MessageBox::Open("Student with given roll number already exists", "Roll number exists!!", MB_OK | MB_ICONEXCLAMATION);
+		std::string msg = "Student with Roll number " + std::to_string(roll) + " already exists";
+		cms::MessageBox::Open(msg.c_str(), "Student Cannot be admitted!!", MB_OK | MB_ICONEXCLAMATION);
 	}
 	else
 	{
 		m_Students.emplace_back(name, roll, address);
+
+		m_Changes = CHANGES::STUDENT_ADD;
+
 		return true;
 	}
 	return false;
 }
 
-void ClassRegistry::RemoveStudent()
+void ClassRegistry::RemoveStudent(int index)
 {
-
+	//m_Changes = m_Changes | CHANGES::STUDENT_REMOVE;
+	m_Students.erase(m_Students.begin() + index);
 }
 
 Student ClassRegistry::GetStudentAt(int index)

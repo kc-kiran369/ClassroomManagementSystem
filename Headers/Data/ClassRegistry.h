@@ -3,11 +3,19 @@
 
 #include<iostream>
 #include<vector>
+#include<string>
 #include"Student.h"
 #include"Windows/MessageBox.h"
 
 namespace cms
 {
+	enum class CHANGES
+	{
+		STUDENT_ADD,
+		STUDENT_REMOVE,
+		STUDENT_EDIT
+	};
+
 	class FillRandom
 	{
 	private:
@@ -31,13 +39,14 @@ namespace cms
 	class ClassRegistry
 	{
 	private:
+		CHANGES m_Changes;
 		std::vector<Student> m_Students;
 	public:
 		static int MaxStudents;
 
 		ClassRegistry();
 		bool AddStudent(std::string name, int roll, std::string address);
-		void RemoveStudent();
+		void RemoveStudent(int index);
 
 		Student GetStudentAt(int index);
 

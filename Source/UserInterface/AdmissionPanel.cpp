@@ -22,63 +22,62 @@ AdmissionPanel::~AdmissionPanel()
 
 void AdmissionPanel::Draw(StudentRegistry* registry)
 {
-	if (ImGui::Begin("Admission"))
+	ImGui::Begin("Admission");
+
+	ImGui::Text("Name : ");
+	ImGui::InputText("Name", m_TmpName, 25);
+	ImGui::Text("Address : ");
+	ImGui::InputText("Address", m_TmpAddress, 25);
+	ImGui::Text("Roll : ");
+	ImGui::SliderInt("Roll", &m_TmpRoll, 1, ClassRegistry::MaxStudents, "%d");
+	ImGui::Text("Class : ");
+	if (ImGui::Combo("Class", &m_ClassIndex, m_Classes, 4))
 	{
-		ImGui::Text("Name : ");
-		ImGui::InputText("Name", m_TmpName, 25);
-		ImGui::Text("Address : ");
-		ImGui::InputText("Address", m_TmpAddress, 25);
-		ImGui::Text("Roll : ");
-		ImGui::SliderInt("Roll", &m_TmpRoll, 1, ClassRegistry::MaxStudents, "%d");
-		ImGui::Text("Class : ");
-		if (ImGui::Combo("Class", &m_ClassIndex, m_Classes, 4))
+		m_TmpClass = (m_ClassIndex + 9);
+	}
+	if (ImGui::Button("Submit"))
+	{
+		if (m_TmpName[0] == '\0')
 		{
-			m_TmpClass = (m_ClassIndex + 9);
+			cms::MessageBox::Open("You must enter valid name of the student", "Enter valid name!!!", MB_OK | MB_ICONWARNING);
+			return;
 		}
-		if (ImGui::Button("Submit"))
+		if (m_TmpAddress[0] == '\0')
 		{
-			if (m_TmpName[0] == '\0')
+			cms::MessageBox::Open("You must enter valid address of the student", "Enter valid address!!!", MB_OK | MB_ICONWARNING);
+			return;
+		}
+		switch (m_TmpClass)
+		{
+		case 9:
+			if (registry->Class09.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
 			{
-				cms::MessageBox::Open("You must enter valid name of the student", "Enter valid name!!!", MB_OK | MB_ICONWARNING);
-				return;
+				cms::MessageBox::Open("You can now upload current data to database", "Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
 			}
-			if (m_TmpAddress[0] == '\0')
+			ClearTempValues();
+			break;
+		case 10:
+			if (registry->Class10.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
 			{
-				cms::MessageBox::Open("You must enter valid address of the student", "Enter valid address!!!", MB_OK | MB_ICONWARNING);
-				return;
+				cms::MessageBox::Open("You can now upload current data to database", "Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
 			}
-			switch (m_TmpClass)
+			ClearTempValues();
+			break;
+		case 11:
+			if (registry->Class11.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
 			{
-			case 9:
-				if (registry->Class09.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
-				{
-					cms::MessageBox::Open("You can now upload current data to database", "Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
-				}
-				ClearTempValues();
-				break;
-			case 10:
-				if (registry->Class10.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
-				{
-					cms::MessageBox::Open("You can now upload current data to database", "Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
-				}
-				ClearTempValues();
-				break;
-			case 11:
-				if (registry->Class11.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
-				{
-					cms::MessageBox::Open("You can now upload current data to database", "Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
-				}
-				ClearTempValues();
-				break;
-			case 12:
-				if (registry->Class12.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
-				{
-					cms::MessageBox::Open("You can now upload current data to database", "Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
-				}
-				ClearTempValues();
-				break;
+				cms::MessageBox::Open("You can now upload current data to database", "Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
 			}
-			ImGui::End();
+			ClearTempValues();
+			break;
+		case 12:
+			if (registry->Class12.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
+			{
+				cms::MessageBox::Open("You can now upload current data to database", "Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
+			}
+			ClearTempValues();
+			break;
 		}
 	}
+	ImGui::End();
 }
