@@ -57,5 +57,4 @@ namespace cms
 		bool HasRollNo(int roll);
 	};
 }
-
 #endif

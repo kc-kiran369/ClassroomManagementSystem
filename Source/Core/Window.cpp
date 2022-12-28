@@ -22,7 +22,7 @@ void cms::Window::Attach()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	ToggleSystemConsole();
+	SetSystemConsoleVisible(false);
 }
 
 void cms::Window::Detach()
@@ -50,4 +50,12 @@ GLFWwindow* cms::Window::GetWindow()
 void cms::Window::ToggleSystemConsole()
 {
 	ShowWindow(GetConsoleWindow(), (IsWindowVisible(GetConsoleWindow()) ? SW_HIDE : SW_SHOW));
+}
+
+void cms::Window::SetSystemConsoleVisible(bool Visible)
+{
+	if (Visible)
+		ShowWindow(GetConsoleWindow(), SW_HIDE);
+	else
+		ShowWindow(GetConsoleWindow(), SW_HIDE);
 }

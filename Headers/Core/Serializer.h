@@ -28,10 +28,6 @@ public:
 	int GetInt(std::string key);
 	float GetFloat(std::string key);
 	std::string GetString(std::string key);
-
-	void SetInt(std::string key, int value);
-	void SetFloat(std::string key, float value);
-	void SetString(std::string key, std::string value);
 };
 
-#endif // !SERIALIZER_H
+#endif

@@ -1,5 +1,4 @@
 #include"Core/Application.h"
-
 #include"Core/Serializer.h"
 
 int main()

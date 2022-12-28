@@ -36,18 +36,18 @@ std::string Serializer::GetString(std::string key)
 	std::string val = GetValue(key);
 	return val;
 }
-
-void Serializer::SetInt(std::string key, int value)
-{
-	
-}
-
-void Serializer::SetFloat(std::string key, float value)
-{
-
-}
-
-void Serializer::SetString(std::string key, std::string value)
-{
-
-}
+//
+//void Serializer::SetInt(std::string key, int value)
+//{
+//	
+//}
+//
+//void Serializer::SetFloat(std::string key, float value)
+//{
+//
+//}
+//
+//void Serializer::SetString(std::string key, std::string value)
+//{
+//
+//}

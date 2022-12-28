@@ -33,6 +33,7 @@ void cms::GUI::Attach(StudentRegistry* registry)
 	io->IniFilename = "config_ui.ini";
 
 	float tmpScale = Serializer::Instance().GetFloat("ui_scale");
+	std::cout << tmpScale << std::endl;
 	io->FontGlobalScale = tmpScale;
 	m_UIScale = tmpScale;
 }
@@ -51,6 +52,8 @@ void cms::GUI::OnUpdate()
 	ImGui::NewFrame();
 
 	ImGui::DockSpaceOverViewport();
+
+	ImGui::ShowDemoWindow();
 
 	RenderUIElements();
 }
@@ -272,6 +275,7 @@ void cms::GUI::MainMenuBar()
 					glfwSetWindowShouldClose(m_Window, 1);
 				}
 			}
+
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Theme"))
@@ -431,14 +435,25 @@ void cms::GUI::SettingsPanel()
 {
 	ImGui::Begin("Settings");
 
-	if (ImGui::SliderFloat("UI Scale", &m_UIScale, 1.0f, 2.0f, "%.2f"))
+	if (ImGui::TreeNodeEx("View", ImGuiTreeNodeFlags_Bullet | ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		io->FontGlobalScale = m_UIScale;
+		if (ImGui::SliderFloat("UI Scale", &m_UIScale, 1.0f, 2.0f, "%.2f"))
+		{
+			io->FontGlobalScale = m_UIScale;
+		}
+		ImGui::TreePop();
 	}
 
-	if (ImGui::Button("Save Settings"))
+	if (ImGui::TreeNodeEx("Database", ImGuiTreeNodeFlags_Bullet | ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		Serializer::Instance().SetFloat("ui_scale", m_UIScale);
+		//if(NotConnectedToDatabase)
+
+		if (ImGui::Button("Connect To database"))
+		{
+
+		}
+
+		ImGui::TreePop();
 	}
 
 	ImGui::End();
@@ -447,7 +462,7 @@ void cms::GUI::SettingsPanel()
 void cms::GUI::DrawTable(int _class)
 {
 	ClassRegistry& registry = (_class == 9 ? m_Registry->Class09 : (_class == 10 ? m_Registry->Class10 : (_class == 11 ? m_Registry->Class11 : m_Registry->Class12)));
-	if (ImGui::BeginTable("Class", 4))
+	if (ImGui::BeginTable("Class", 5))
 	{
 		ImGui::TableNextRow();
 		ImGui::TableNextColumn();
@@ -465,16 +480,28 @@ void cms::GUI::DrawTable(int _class)
 			ImGui::TableNextColumn();
 			ImGui::Text("%d", (row + 1));
 			ImGui::TableNextColumn();
+			//ImGui::Selectable(registry.GetStudentAt(row).GetName().c_str());
 			ImGui::Text("%s", registry.GetStudentAt(row).GetName());
 			ImGui::TableNextColumn();
 			ImGui::Text("%d", registry.GetStudentAt(row).GetRoll());
 			ImGui::TableNextColumn();
 			ImGui::Text("%s", registry.GetStudentAt(row).GetAddress());
+			ImGui::TableNextColumn();
+
+			ImGui::PushID(row);
+			if (ImGui::Button(":"))
+			{
+				std::stringstream msg;
+				msg << "Name : " << registry.GetStudentAt(row).GetName() << "\n"
+					<< "Roll No : " << registry.GetStudentAt(row).GetRoll() << "\n"
+					<< "Address : " << registry.GetStudentAt(row).GetAddress();
+				if (cms::MessageBox::Open(msg.str().c_str(), "Do you want to clear record of", MB_YESNO | MB_ICONQUESTION) == 6)
+				{
+					registry.RemoveStudent(row);
+				}
+			}
+			ImGui::PopID();
 		}
 		ImGui::EndTable();
-	}
-	if (ImGui::Button("Upload To Cloud"))
-	{
-		cms::MessageBox::Open("All the data will be uploaded to local database.", "Do you want to upload to database ?", MB_YESNO);
 	}
 }

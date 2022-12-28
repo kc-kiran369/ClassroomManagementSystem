@@ -22,6 +22,7 @@ namespace cms
 		void OnUpdate();
 		void OnUpdateComplete();
 		static void ToggleSystemConsole();
+		static void SetSystemConsoleVisible(bool Visible);
 		GLFWwindow* GetWindow();
 	};
 }
