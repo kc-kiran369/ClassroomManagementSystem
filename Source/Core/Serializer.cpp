@@ -6,6 +6,11 @@ Serializer Serializer::instance;
 std::string Serializer::GetValue(std::string& key)
 {
 	std::ifstream in("config_app.cms", std::ios::in);
+
+	if (in.fail()) {
+		CreateConfigFile();
+	}
+
 	std::string line;
 	while (std::getline(in, line))
 	{
@@ -17,6 +22,14 @@ std::string Serializer::GetValue(std::string& key)
 	}
 	in.close();
 	return "NULL";
+}
+
+void Serializer::CreateConfigFile()
+{
+	std::ofstream out;
+	out.open("config_app.cms");
+	out << "width:1000\nheight:600\nui_scale:1.2\nsystem_console:false" << std::endl;
+	out.close();
 }
 
 int Serializer::GetInt(std::string key)

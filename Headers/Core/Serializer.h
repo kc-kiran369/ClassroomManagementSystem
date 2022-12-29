@@ -17,6 +17,8 @@ private:
 	Serializer(const Serializer&) = delete;
 	Serializer& operator=(const Serializer&) = delete;
 
+	void CreateConfigFile();
+
 public:
 	// Public static method to access the single instance
 	static Serializer& Instance() {

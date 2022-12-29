@@ -33,7 +33,6 @@ void cms::GUI::Attach(StudentRegistry* registry)
 	io->IniFilename = "config_ui.ini";
 
 	float tmpScale = Serializer::Instance().GetFloat("ui_scale");
-	std::cout << tmpScale << std::endl;
 	io->FontGlobalScale = tmpScale;
 	m_UIScale = tmpScale;
 }
@@ -68,8 +67,7 @@ void cms::GUI::RenderUIElements()
 {
 	MainMenuBar();
 	Inspector();
-	DashboardPanel();
-	AttPanel();
+	dashboardPanel.Draw(m_Registry);
 	StudentsPanel();
 	admissionPanel.Draw(m_Registry);
 	SettingsPanel();
@@ -337,10 +335,6 @@ void cms::GUI::Inspector()
 		{
 			ImGui::SetWindowFocus("Dashboard");
 		}
-		if (ImGui::Button("Attendance", ImVec2{ ImGui::GetColumnWidth(),40.0f }))
-		{
-			ImGui::SetWindowFocus("Attendance");
-		}
 		if (ImGui::Button("Students", ImVec2{ ImGui::GetColumnWidth(),40.0f }))
 		{
 			ImGui::SetWindowFocus("Students");
@@ -355,49 +349,6 @@ void cms::GUI::Inspector()
 		}
 		ImGui::End();
 	}
-}
-
-void cms::GUI::DashboardPanel()
-{
-	ImGui::Begin("Dashboard");
-
-	float values[] = {
-		m_Registry->Class09.GetTotalStudents(),
-		m_Registry->Class10.GetTotalStudents(),
-		m_Registry->Class11.GetTotalStudents(),
-		m_Registry->Class12.GetTotalStudents()
-	};
-
-	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 0,0 });
-
-	ImGui::BeginChildFrame(1, ImVec2{ ImGui::GetWindowWidth() / 2,250 }, ImGuiWindowFlags_NoScrollbar);
-
-	ImGui::PlotHistogram("Stds", values, 4, 0, "Total Students", 0, 50.0f, ImVec2{ ImGui::GetWindowWidth(),ImGui::GetWindowHeight() }, 4);
-	ImGui::EndChildFrame();
-
-	ImGui::PopStyleVar();
-	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 10,10 });
-	ImGui::SameLine();
-
-	ImGui::BeginChildFrame(3, ImVec2{ 300,250 }, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysUseWindowPadding);
-
-	ImGui::Text("Total Students : %d", m_Registry->GetTotalStudents());
-	ImGui::Text("Class 9 : %d", m_Registry->Class09.GetTotalStudents());
-	ImGui::Text("Class 10 : %d", m_Registry->Class10.GetTotalStudents());
-	ImGui::Text("Class 11 : %d", m_Registry->Class11.GetTotalStudents());
-	ImGui::Text("Class 12 : %d", m_Registry->Class12.GetTotalStudents());
-	ImGui::EndChildFrame();
-
-	ImGui::PopStyleVar();
-	ImGui::End();
-}
-
-void cms::GUI::AttPanel()
-{
-	ImGui::Begin("Attendance");
-
-
-	ImGui::End();
 }
 
 void cms::GUI::StudentsPanel()
@@ -480,7 +431,6 @@ void cms::GUI::DrawTable(int _class)
 			ImGui::TableNextColumn();
 			ImGui::Text("%d", (row + 1));
 			ImGui::TableNextColumn();
-			//ImGui::Selectable(registry.GetStudentAt(row).GetName().c_str());
 			ImGui::Text("%s", registry.GetStudentAt(row).GetName());
 			ImGui::TableNextColumn();
 			ImGui::Text("%d", registry.GetStudentAt(row).GetRoll());
@@ -491,14 +441,31 @@ void cms::GUI::DrawTable(int _class)
 			ImGui::PushID(row);
 			if (ImGui::Button(":"))
 			{
-				std::stringstream msg;
-				msg << "Name : " << registry.GetStudentAt(row).GetName() << "\n"
-					<< "Roll No : " << registry.GetStudentAt(row).GetRoll() << "\n"
-					<< "Address : " << registry.GetStudentAt(row).GetAddress();
-				if (cms::MessageBox::Open(msg.str().c_str(), "Do you want to clear record of", MB_YESNO | MB_ICONQUESTION) == 6)
+				ImGui::OpenPopup("ContextMenu");
+			}
+			if (ImGui::BeginPopupModal("ContextMenu", (bool*)0, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize))
+			{
+				if (ImGui::TreeNodeEx("Edit Details"))
 				{
-					registry.RemoveStudent(row);
+
+					ImGui::TreePop();
 				}
+				ImGui::Separator();
+				if (ImGui::TreeNodeEx("Remove Student"))
+				{
+					ImGui::Text("The Following Student Will Be Removed");
+					ImGui::Text("Name : %s", registry.GetStudentAt(row).GetName());
+					ImGui::Text("Roll No : %d", registry.GetStudentAt(row).GetRoll());
+					ImGui::Text("Address : %s", registry.GetStudentAt(row).GetAddress());
+					if (ImGui::Button("Delete"))
+					{
+						registry.RemoveStudent(row);
+						cms::MessageBox::Open("Record cleared successfully!!", "Classroom Management", MB_OK | MB_ICONINFORMATION);
+						ImGui::CloseCurrentPopup();
+					}
+					ImGui::TreePop();
+				}
+				ImGui::EndPopup();
 			}
 			ImGui::PopID();
 		}

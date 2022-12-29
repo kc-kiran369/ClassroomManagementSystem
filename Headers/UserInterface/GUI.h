@@ -12,6 +12,7 @@
 #include"Core/Layer.h"
 #include"Data/StudentRegistry.h"
 #include"AdmissionPanel.h"
+#include"DashboardPanel.h"
 #include"Windows/MessageBox.h"
 #include"Core/Window.h"
 #include"Core/Serializer.h"
@@ -30,11 +31,10 @@ namespace cms
 		ImVec4* colors;
 		StudentRegistry* m_Registry;
 		AdmissionPanel admissionPanel;
+		DashboardPanel dashboardPanel;
 
 		void MainMenuBar();
 		void Inspector();
-		void DashboardPanel();
-		void AttPanel();
 		void StudentsPanel();
 		void SettingsPanel();
 		void Style();

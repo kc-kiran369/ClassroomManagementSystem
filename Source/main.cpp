@@ -1,7 +1,7 @@
 #include"Core/Application.h"
 #include"Core/Serializer.h"
 
-int main()
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	std::unique_ptr<cms::Application> app = std::make_unique<cms::Application>(
 		"Classroom Management (64-bit, windows)", 
