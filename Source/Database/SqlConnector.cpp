@@ -1,6 +1,6 @@
 #include "Database\SqlConnector.h"
 
-using namespace cms::database;
+using namespace cms::Database;
 
 SqlConnector::SqlConnector()
 {

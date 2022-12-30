@@ -1,7 +1,7 @@
 #ifndef SQL_CONNECTOR_H
 #define SQL_CONNECTOR_H
 
-namespace cms::database
+namespace cms::Database
 {
 	class SqlConnector
 	{

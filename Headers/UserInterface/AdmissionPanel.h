@@ -6,11 +6,12 @@
 
 #include"Data/ClassRegistry.h"
 #include"Data/StudentRegistry.h"
+#include"Panel.h"
 #include"Windows/MessageBox.h"
 
-namespace cms
+namespace cms::UI
 {
-	class AdmissionPanel
+	class AdmissionPanel : public Panel
 	{
 	private:
 		char m_TmpName[25];
@@ -23,9 +24,12 @@ namespace cms
 
 		void ClearTempValues();
 	public:
-		AdmissionPanel();
+		AdmissionPanel() = default;
+		AdmissionPanel(Data::StudentRegistry* registry);
 		~AdmissionPanel();
-		void Draw(StudentRegistry* registry);
+
+		void Draw() override;
+		void SetRegistry(Data::StudentRegistry* Registry) override;
 	};
 }
 #endif

@@ -4,7 +4,7 @@
 #include <Windows.h>
 #include<WinUser.h>
 
-namespace cms
+namespace cms::Windows
 {
 	class MessageBox
 	{

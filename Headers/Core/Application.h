@@ -7,13 +7,13 @@
 #include"UserInterface/GUI.h"
 #include"Data/StudentRegistry.h"
 
-namespace cms
+namespace cms::Core
 {
 	class Application : public Layer
 	{
 	private:
 		Window* m_Window;
-		GUI* m_UserInterface;
+		UI::GUI* m_UserInterface;
 	public:
 		Application(const char* ApplicationName, int width, int height);
 		~Application();

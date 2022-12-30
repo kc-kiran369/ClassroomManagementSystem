@@ -1,20 +1,14 @@
 #include"UserInterface/GUI.h"
 
-cms::GUI::GUI(GLFWwindow* window)
+cms::UI::GUI::GUI(GLFWwindow* window)
 	:m_Window(window)
-{
+{}
 
-}
+cms::UI::GUI::~GUI() {}
 
-cms::GUI::~GUI()
-{
-}
+void cms::UI::GUI::Attach() {}
 
-void cms::GUI::Attach()
-{
-}
-
-void cms::GUI::Attach(StudentRegistry* registry)
+void cms::UI::GUI::Attach(Data::StudentRegistry* registry)
 {
 	m_Registry = registry;
 
@@ -32,19 +26,24 @@ void cms::GUI::Attach(StudentRegistry* registry)
 	io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	io->IniFilename = "config_ui.ini";
 
-	float tmpScale = Serializer::Instance().GetFloat("ui_scale");
+	float tmpScale = Core::Serializer::Instance().GetFloat("ui_scale");
 	io->FontGlobalScale = tmpScale;
 	m_UIScale = tmpScale;
+
+	admissionPanel.SetRegistry(m_Registry);
+	dashboardPanel.SetRegistry(m_Registry);
+	studentsPanel.SetRegistry(m_Registry);
+	navigationPanel.SetRegistry(m_Registry);
 }
 
-void cms::GUI::Detach()
+void cms::UI::GUI::Detach()
 {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 }
 
-void cms::GUI::OnUpdate()
+void cms::UI::GUI::OnUpdate()
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
@@ -52,28 +51,27 @@ void cms::GUI::OnUpdate()
 
 	ImGui::DockSpaceOverViewport();
 
-	ImGui::ShowDemoWindow();
-
 	RenderUIElements();
 }
 
-void cms::GUI::OnUpdateComplete()
+void cms::UI::GUI::OnUpdateComplete()
 {
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void cms::GUI::RenderUIElements()
+void cms::UI::GUI::RenderUIElements()
 {
 	MainMenuBar();
-	Inspector();
-	dashboardPanel.Draw(m_Registry);
-	StudentsPanel();
-	admissionPanel.Draw(m_Registry);
+	dashboardPanel.Draw();
+	studentsPanel.Draw();
+	admissionPanel.Draw();
+	navigationPanel.Draw();
+	announcementPanel.Draw();
 	SettingsPanel();
 }
 
-void cms::GUI::SetDarkTheme()
+void cms::UI::GUI::SetDarkTheme()
 {
 	colors[ImGuiCol_Text] = ImVec4(1.000f, 1.000f, 1.000f, 1.000f);
 	colors[ImGuiCol_TextDisabled] = ImVec4(0.500f, 0.500f, 0.500f, 1.000f);
@@ -127,7 +125,7 @@ void cms::GUI::SetDarkTheme()
 	colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.000f, 0.000f, 0.000f, 0.586f);
 }
 
-void cms::GUI::SetGreenTheme()
+void cms::UI::GUI::SetGreenTheme()
 {
 	colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
 	colors[ImGuiCol_TextDisabled] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
@@ -186,7 +184,7 @@ void cms::GUI::SetGreenTheme()
 	colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 }
 
-void cms::GUI::SetRedTheme()
+void cms::UI::GUI::SetRedTheme()
 {
 	colors[ImGuiCol_Text] = ImVec4(0.75f, 0.75f, 0.75f, 1.00f);
 	colors[ImGuiCol_TextDisabled] = ImVec4(0.35f, 0.35f, 0.35f, 1.00f);
@@ -245,9 +243,9 @@ void cms::GUI::SetRedTheme()
 	colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 }
 
-void cms::GUI::Style()
+void cms::UI::GUI::Style()
 {
-	style->FramePadding = ImVec2{ 15,5 };
+	style->FramePadding = ImVec2{ 15,10 };
 	style->ItemSpacing = ImVec2{ 8,4 };
 
 	style->TabRounding = 0.0f;
@@ -257,10 +255,14 @@ void cms::GUI::Style()
 	style->FrameBorderSize = 1.0f;
 	style->TabBorderSize = 1.0f;
 
+	style->WindowRounding = 3.0f;
+	style->FrameRounding = 3.0f;
+	style->GrabRounding = 3.0f;
+
 	style->WindowMenuButtonPosition = ImGuiDir_None;
 }
 
-void cms::GUI::MainMenuBar()
+void cms::UI::GUI::MainMenuBar()
 {
 	if (ImGui::BeginMainMenuBar())
 	{
@@ -268,12 +270,11 @@ void cms::GUI::MainMenuBar()
 		{
 			if (ImGui::MenuItem("Exit"))
 			{
-				if (cms::MessageBox::Open("Any unsaved progress will be lost!!", "Do you want to exit", MB_OKCANCEL | MB_ICONQUESTION) == 1)
+				if (cms::Windows::MessageBox::Open("Any unsaved progress will be lost!!", "Do you want to exit", MB_OKCANCEL | MB_ICONQUESTION) == 1)
 				{
 					glfwSetWindowShouldClose(m_Window, 1);
 				}
 			}
-
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Theme"))
@@ -308,7 +309,7 @@ void cms::GUI::MainMenuBar()
 		{
 			if (ImGui::MenuItem("Toggle System Console"))
 			{
-				cms::Window::ToggleSystemConsole();
+				Core::Window::ToggleSystemConsole();
 			}
 			ImGui::EndMenu();
 		}
@@ -327,62 +328,7 @@ void cms::GUI::MainMenuBar()
 	}
 }
 
-void cms::GUI::Inspector()
-{
-	if (ImGui::Begin("Inspector"))
-	{
-		if (ImGui::Button("Dashboard", ImVec2{ ImGui::GetColumnWidth(),40.0f }))
-		{
-			ImGui::SetWindowFocus("Dashboard");
-		}
-		if (ImGui::Button("Students", ImVec2{ ImGui::GetColumnWidth(),40.0f }))
-		{
-			ImGui::SetWindowFocus("Students");
-		}
-		if (ImGui::Button("Admission", ImVec2{ ImGui::GetColumnWidth(),40.0f }))
-		{
-			ImGui::SetWindowFocus("Admission");
-		}
-		if (ImGui::Button("Settings", ImVec2{ ImGui::GetColumnWidth(),40.0f }))
-		{
-			ImGui::SetWindowFocus("Settings");
-		}
-		ImGui::End();
-	}
-}
-
-void cms::GUI::StudentsPanel()
-{
-	ImGui::Begin("Students");
-
-	if (ImGui::BeginTabBar("Tab", ImGuiTabBarFlags_None))
-	{
-		if (ImGui::BeginTabItem("Class 9"))
-		{
-			DrawTable(9);
-			ImGui::EndTabItem();
-		}
-		if (ImGui::BeginTabItem("Class 10"))
-		{
-			DrawTable(10);
-			ImGui::EndTabItem();
-		}
-		if (ImGui::BeginTabItem("Class 11"))
-		{
-			DrawTable(11);
-			ImGui::EndTabItem();
-		}
-		if (ImGui::BeginTabItem("Class 12"))
-		{
-			DrawTable(12);
-			ImGui::EndTabItem();
-		}
-		ImGui::EndTabBar();
-	}
-	ImGui::End();
-}
-
-void cms::GUI::SettingsPanel()
+void cms::UI::GUI::SettingsPanel()
 {
 	ImGui::Begin("Settings");
 
@@ -397,78 +343,12 @@ void cms::GUI::SettingsPanel()
 
 	if (ImGui::TreeNodeEx("Database", ImGuiTreeNodeFlags_Bullet | ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		//if(NotConnectedToDatabase)
-
 		if (ImGui::Button("Connect To database"))
 		{
-
+			//Database::SqlConnector::SqlConnector();
 		}
-
 		ImGui::TreePop();
 	}
 
 	ImGui::End();
-}
-
-void cms::GUI::DrawTable(int _class)
-{
-	ClassRegistry& registry = (_class == 9 ? m_Registry->Class09 : (_class == 10 ? m_Registry->Class10 : (_class == 11 ? m_Registry->Class11 : m_Registry->Class12)));
-	if (ImGui::BeginTable("Class", 5))
-	{
-		ImGui::TableNextRow();
-		ImGui::TableNextColumn();
-		ImGui::TableHeader("SN");
-		ImGui::TableNextColumn();
-		ImGui::TableHeader("Name");
-		ImGui::TableNextColumn();
-		ImGui::TableHeader("Roll");
-		ImGui::TableNextColumn();
-		ImGui::TableHeader("Address");
-
-		for (int row = 0; row < registry.GetTotalStudents(); row++)
-		{
-			ImGui::TableNextRow();
-			ImGui::TableNextColumn();
-			ImGui::Text("%d", (row + 1));
-			ImGui::TableNextColumn();
-			ImGui::Text("%s", registry.GetStudentAt(row).GetName());
-			ImGui::TableNextColumn();
-			ImGui::Text("%d", registry.GetStudentAt(row).GetRoll());
-			ImGui::TableNextColumn();
-			ImGui::Text("%s", registry.GetStudentAt(row).GetAddress());
-			ImGui::TableNextColumn();
-
-			ImGui::PushID(row);
-			if (ImGui::Button(":"))
-			{
-				ImGui::OpenPopup("ContextMenu");
-			}
-			if (ImGui::BeginPopupModal("ContextMenu", (bool*)0, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize))
-			{
-				if (ImGui::TreeNodeEx("Edit Details"))
-				{
-
-					ImGui::TreePop();
-				}
-				ImGui::Separator();
-				if (ImGui::TreeNodeEx("Remove Student"))
-				{
-					ImGui::Text("The Following Student Will Be Removed");
-					ImGui::Text("Name : %s", registry.GetStudentAt(row).GetName());
-					ImGui::Text("Roll No : %d", registry.GetStudentAt(row).GetRoll());
-					ImGui::Text("Address : %s", registry.GetStudentAt(row).GetAddress());
-					if (ImGui::Button("Delete"))
-					{
-						registry.RemoveStudent(row);
-						cms::MessageBox::Open("Record cleared successfully!!", "Classroom Management", MB_OK | MB_ICONINFORMATION);
-						ImGui::CloseCurrentPopup();
-					}
-					ImGui::TreePop();
-				}
-				ImGui::EndPopup();
-			}
-			ImGui::PopID();
-		}
-		ImGui::EndTable();
-	}
 }

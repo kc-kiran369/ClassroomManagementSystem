@@ -5,31 +5,34 @@
 #include<fstream>
 #include<string>
 
-class Serializer
+namespace cms::Core
 {
-private:
-	static Serializer instance;
-	std::string GetValue(std::string& key);
+	class Serializer
+	{
+	private:
+		static Serializer instance;
+		std::string GetValue(std::string& key);
 
-	// Private constructor to prevent object creation
-	Serializer() {}
-	// Private copy constructor and assignment operator to prevent copying
-	Serializer(const Serializer&) = delete;
-	Serializer& operator=(const Serializer&) = delete;
+		// Private constructor to prevent object creation
+		Serializer() {}
+		// Private copy constructor and assignment operator to prevent copying
+		Serializer(const Serializer&) = delete;
+		Serializer& operator=(const Serializer&) = delete;
 
-	void CreateConfigFile();
+		void CreateConfigFile();
 
-public:
-	// Public static method to access the single instance
-	static Serializer& Instance() {
-		return instance;
-	}
+	public:
+		// Public static method to access the single instance
+		static Serializer& Instance() {
+			return instance;
+		}
 
-	static const short int VALUE_NOT_FOUND = -1;
+		static const short int VALUE_NOT_FOUND = -1;
 
-	int GetInt(std::string key);
-	float GetFloat(std::string key);
-	std::string GetString(std::string key);
-};
+		int GetInt(std::string key);
+		float GetFloat(std::string key);
+		std::string GetString(std::string key);
+	};
+}
 
 #endif

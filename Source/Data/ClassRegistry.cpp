@@ -1,24 +1,22 @@
 #include"Data/ClassRegistry.h"
 
-using namespace cms;
+int cms::Data::ClassRegistry::MaxStudents = 48;
 
-int ClassRegistry::MaxStudents = 48;
-
-ClassRegistry::ClassRegistry()
+cms::Data::ClassRegistry::ClassRegistry()
 {
 	m_Students.clear();
 }
 
-bool ClassRegistry::AddStudent(std::string name, int roll, std::string address)
+bool cms::Data::ClassRegistry::AddStudent(std::string name, int roll, std::string address)
 {
 	if (GetTotalStudents() > 48)
 	{
-		cms::MessageBox::Open("More than 48 students cannot be admitted", "Maximum students reached", MB_OK | MB_ICONWARNING);
+		cms::Windows::MessageBox::Open("More than 48 students cannot be admitted", "Maximum students reached", MB_OK | MB_ICONWARNING);
 	}
 	else if (HasRollNo(roll))
 	{
 		std::string msg = "Student with Roll number " + std::to_string(roll) + " already exists";
-		cms::MessageBox::Open(msg.c_str(), "Student Cannot be admitted!!", MB_OK | MB_ICONEXCLAMATION);
+		cms::Windows::MessageBox::Open(msg.c_str(), "Student Cannot be admitted!!", MB_OK | MB_ICONEXCLAMATION);
 	}
 	else
 	{
@@ -31,24 +29,24 @@ bool ClassRegistry::AddStudent(std::string name, int roll, std::string address)
 	return false;
 }
 
-void ClassRegistry::RemoveStudent(int index)
+void cms::Data::ClassRegistry::RemoveStudent(int index)
 {
 	//m_Changes = m_Changes | CHANGES::STUDENT_REMOVE;
 	m_Students.erase(m_Students.begin() + index);
 }
 
-Student ClassRegistry::GetStudentAt(int index)
+cms::Data::Student cms::Data::ClassRegistry::GetStudentAt(int index)
 {
 	return m_Students.at(index);
 }
 
-unsigned int ClassRegistry::GetTotalStudents()
+unsigned int cms::Data::ClassRegistry::GetTotalStudents()
 {
 	std::vector<int>::size_type size = m_Students.size();
 	return size;
 }
 
-void ClassRegistry::FillWithRandomStudents()
+void cms::Data::ClassRegistry::FillWithRandomStudents()
 {
 	FillRandom random;
 	int _roll = 1;
@@ -67,7 +65,7 @@ void ClassRegistry::FillWithRandomStudents()
 	}
 }
 
-bool ClassRegistry::HasRollNo(int roll)
+bool cms::Data::ClassRegistry::HasRollNo(int roll)
 {
 	for (Student& student : m_Students)
 	{

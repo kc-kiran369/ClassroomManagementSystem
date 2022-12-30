@@ -6,9 +6,9 @@
 #include"Layer.h"
 #include<glfw/glfw3.h>
 
-namespace cms
+namespace cms::Core
 {
-	class Window : public cms::Layer
+	class Window : public cms::Core::Layer
 	{
 	private:
 		GLFWwindow* m_Window;

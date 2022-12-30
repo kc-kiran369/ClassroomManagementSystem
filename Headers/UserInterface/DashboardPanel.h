@@ -2,18 +2,23 @@
 #define DAHSBOARD_PANEL
 
 #include"imgui/imgui.h"
-
 #include "Data/StudentRegistry.h"
+#include"Panel.h"
 
-namespace cms
+namespace cms::UI
 {
-	class DashboardPanel
+	class DashboardPanel : public Panel
 	{
 	private:
 		bool m_PanelEnabled = true;
 		bool m_HistogramView = true;
 	public:
-		void Draw(StudentRegistry* registry);
+		DashboardPanel() = default;
+		DashboardPanel(Data::StudentRegistry* registry);
+		~DashboardPanel();
+
+		void Draw() override;
+		void SetRegistry(Data::StudentRegistry* Registry) override;
 	};
 }
 

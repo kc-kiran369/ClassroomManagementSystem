@@ -3,10 +3,10 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	std::unique_ptr<cms::Application> app = std::make_unique<cms::Application>(
-		"Classroom Management (64-bit, windows)", 
-		Serializer::Instance().GetInt("width"), 
-		Serializer::Instance().GetInt("height"));
+	std::unique_ptr<cms::Core::Application> app = std::make_unique<cms::Core::Application>(
+		cms::Core::Serializer::Instance().GetString("app_name").c_str(),
+		cms::Core::Serializer::Instance().GetInt("width"),
+		cms::Core::Serializer::Instance().GetInt("height"));
 	app->Run();
 	return EXIT_SUCCESS;
 }

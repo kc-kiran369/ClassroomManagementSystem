@@ -1,7 +1,7 @@
 #ifndef LAYER_H
 #define LAYER_H
 
-namespace cms
+namespace cms::Core
 {
 	class Layer
 	{

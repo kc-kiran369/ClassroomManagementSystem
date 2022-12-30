@@ -5,7 +5,7 @@
 #include<vector>
 #include"ClassRegistry.h"
 
-namespace cms
+namespace cms::Data
 {
 	class StudentRegistry
 	{

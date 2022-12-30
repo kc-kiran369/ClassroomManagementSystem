@@ -2,18 +2,22 @@
 #define STUDENTS_PANEL
 
 #include"imgui/imgui.h"
-
 #include "Data/StudentRegistry.h"
+#include"Panel.h"
 
-namespace cms
+namespace cms::UI
 {
-	class StudentsPanel
+	class StudentsPanel : public Panel
 	{
 	private:
-		bool m_PanelEnabled = true;
+		void DrawTable(int _class);
 	public:
-		void Draw(StudentRegistry* registry);
+		StudentsPanel() = default;
+		StudentsPanel(Data::StudentRegistry* registry);
+		~StudentsPanel();
+
+		void Draw() override;
+		void SetRegistry(Data::StudentRegistry* Registry) override;
 	};
 }
-
 #endif

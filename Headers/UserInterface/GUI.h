@@ -10,16 +10,21 @@
 #include"ImGUI/imgui_impl_opengl3.h"
 
 #include"Core/Layer.h"
-#include"Data/StudentRegistry.h"
-#include"AdmissionPanel.h"
-#include"DashboardPanel.h"
-#include"Windows/MessageBox.h"
 #include"Core/Window.h"
 #include"Core/Serializer.h"
+#include"Windows/MessageBox.h"
+#include"Data/StudentRegistry.h"
+#include "Database/SqlConnector.h"
 
-namespace cms
+#include"AdmissionPanel.h"
+#include"DashboardPanel.h"
+#include"StudentsPanel.h"
+#include"NavigationPanel.h"
+#include"AnnouncementPanel.h"
+
+namespace cms::UI
 {
-	class GUI : public Layer
+	class GUI : public Core::Layer
 	{
 	private:
 		float m_UIScale = 1.0f;
@@ -29,26 +34,27 @@ namespace cms
 		ImGuiIO* io;
 		ImGuiStyle* style;
 		ImVec4* colors;
-		StudentRegistry* m_Registry;
+
+		Data::StudentRegistry* m_Registry;
+
 		AdmissionPanel admissionPanel;
 		DashboardPanel dashboardPanel;
+		StudentsPanel studentsPanel;
+		NavigationPanel navigationPanel;
+		AnnouncementPanel announcementPanel;
 
 		void MainMenuBar();
-		void Inspector();
-		void StudentsPanel();
 		void SettingsPanel();
 		void Style();
-
-		void DrawTable(int _class);
 	public:
 		GUI(GLFWwindow* window);
 		~GUI();
 
-		void Attach();
-		void Attach(StudentRegistry* registry);
-		void Detach();
-		void OnUpdate();
-		void OnUpdateComplete();
+		void Attach()override;
+		void Attach(Data::StudentRegistry* registry);
+		void Detach()override;
+		void OnUpdate()override;
+		void OnUpdateComplete()override;
 
 		void RenderUIElements();
 

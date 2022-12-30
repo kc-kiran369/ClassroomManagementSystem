@@ -7,7 +7,7 @@
 #include"Student.h"
 #include"Windows/MessageBox.h"
 
-namespace cms
+namespace cms::Data
 {
 	enum class CHANGES
 	{

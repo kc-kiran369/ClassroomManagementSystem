@@ -1,18 +1,16 @@
 #include"Data/StudentRegistry.h"
 
-using namespace cms;
-
-StudentRegistry::StudentRegistry()
+cms::Data::StudentRegistry::StudentRegistry()
 {
-	
+
 }
 
-StudentRegistry::~StudentRegistry()
+cms::Data::StudentRegistry::~StudentRegistry()
 {
-	
+
 }
 
-unsigned int StudentRegistry::GetTotalStudents()
+unsigned int cms::Data::StudentRegistry::GetTotalStudents()
 {
 	return (unsigned int)Class09.GetTotalStudents() +
 		Class10.GetTotalStudents() +

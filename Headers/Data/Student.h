@@ -3,7 +3,7 @@
 
 #include<iostream>
 
-namespace cms
+namespace cms::Data
 {
 	class Student
 	{

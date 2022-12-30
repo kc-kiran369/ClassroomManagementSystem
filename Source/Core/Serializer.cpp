@@ -1,16 +1,16 @@
 #include"Core/Serializer.h"
 
-Serializer Serializer::instance;
+cms::Core::Serializer cms::Core::Serializer::instance;
 
-//For internal purpose
-std::string Serializer::GetValue(std::string& key)
+//Private methods
+std::string cms::Core::Serializer::GetValue(std::string& key)
 {
-	std::ifstream in("config_app.cms", std::ios::in);
-
+	std::ifstream in;
+	in.open("config_app.cms", std::ios::in);
 	if (in.fail()) {
 		CreateConfigFile();
+		in.open("config_app.cms", std::ios::in);
 	}
-
 	std::string line;
 	while (std::getline(in, line))
 	{
@@ -24,43 +24,28 @@ std::string Serializer::GetValue(std::string& key)
 	return "NULL";
 }
 
-void Serializer::CreateConfigFile()
+void cms::Core::Serializer::CreateConfigFile()
 {
-	std::ofstream out;
-	out.open("config_app.cms");
-	out << "width:1000\nheight:600\nui_scale:1.2\nsystem_console:false" << std::endl;
+	std::ofstream out("config_app.cms");
+	out << "width:1000\nheight:600\nui_scale:1.2\nsystem_console:false\napp_name:Classroom Management (64-bit, windows)" << std::endl;
 	out.close();
 }
 
-int Serializer::GetInt(std::string key)
+//Public methods
+int cms::Core::Serializer::GetInt(std::string key)
 {
 	std::string val = GetValue(key);
 	return (val == "NULL" ? VALUE_NOT_FOUND : std::stoi(val));
 }
 
-float Serializer::GetFloat(std::string key)
+float cms::Core::Serializer::GetFloat(std::string key)
 {
 	std::string val = GetValue(key);
 	return (val == "NULL" ? VALUE_NOT_FOUND : std::stof(val));
 }
 
-std::string Serializer::GetString(std::string key)
+std::string cms::Core::Serializer::GetString(std::string key)
 {
 	std::string val = GetValue(key);
 	return val;
 }
-//
-//void Serializer::SetInt(std::string key, int value)
-//{
-//	
-//}
-//
-//void Serializer::SetFloat(std::string key, float value)
-//{
-//
-//}
-//
-//void Serializer::SetString(std::string key, std::string value)
-//{
-//
-//}
