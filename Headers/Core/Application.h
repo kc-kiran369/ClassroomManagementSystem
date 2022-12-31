@@ -9,7 +9,7 @@
 
 namespace cms::Core
 {
-	class Application : public Layer
+	class Application
 	{
 	private:
 		Window* m_Window;
@@ -18,10 +18,6 @@ namespace cms::Core
 		Application(const char* ApplicationName, int width, int height);
 		~Application();
 		void Run();
-		void Attach();
-		void Detach();
-		void OnUpdate();
-		void OnUpdateComplete();
 	};
 }
 

@@ -1,5 +1,17 @@
 #include"Core/Application.h"
 
+unsigned int total_allocations = 0, total_allocation_size = 0;
+
+void* operator new (size_t size)
+{
+	if (size == 0)
+		return nullptr;
+	total_allocations++;
+	std::cout << "Allocating : " << size << " bytes" << std::endl;
+	total_allocation_size += size;
+	return malloc(size);
+}
+
 cms::Core::Application::Application(const char* ApplicationName, int width, int height)
 {
 	m_Window = new Window(ApplicationName, width, height);
@@ -29,11 +41,3 @@ void cms::Core::Application::Run()
 	m_UserInterface->Detach();
 	m_Window->Detach();
 }
-
-void cms::Core::Application::Attach() {}
-
-void cms::Core::Application::Detach() {}
-
-void cms::Core::Application::OnUpdate() {}
-
-void cms::Core::Application::OnUpdateComplete() {}

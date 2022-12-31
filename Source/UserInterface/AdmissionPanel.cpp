@@ -21,6 +21,7 @@ void cms::UI::AdmissionPanel::ClearTempValues()
 	std::fill(std::begin(m_TmpAddress), std::end(m_TmpAddress), '\0');
 	m_TmpRoll = 1;
 	m_TmpClass = 9;
+	m_ClassIndex = 0;
 }
 
 void cms::UI::AdmissionPanel::Draw()

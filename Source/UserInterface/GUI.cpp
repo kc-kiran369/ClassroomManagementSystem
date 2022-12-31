@@ -26,9 +26,12 @@ void cms::UI::GUI::Attach(Data::StudentRegistry* registry)
 	io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	io->IniFilename = "config_ui.ini";
 
-	float tmpScale = Core::Serializer::Instance().GetFloat("ui_scale");
-	io->FontGlobalScale = tmpScale;
-	m_UIScale = tmpScale;
+	//float tmpScale = Core::Serializer::Instance().GetFloat("ui_scale");
+	//io->FontGlobalScale = tmpScale;
+	int l_FontSize = Core::Serializer::Instance().GetFloat("font_size");
+	io->FontDefault = io->Fonts->AddFontFromFileTTF("Resources/Fonts/Urbanist/static/Urbanist-Black.ttf", l_FontSize);
+
+	//m_UIScale = tmpScale;
 
 	admissionPanel.SetRegistry(m_Registry);
 	dashboardPanel.SetRegistry(m_Registry);
@@ -279,30 +282,12 @@ void cms::UI::GUI::MainMenuBar()
 		}
 		if (ImGui::BeginMenu("Theme"))
 		{
-			if (ImGui::MenuItem("Light"))
-			{
-				ImGui::StyleColorsLight();
-			}
-			if (ImGui::MenuItem("Dark 1"))
-			{
-				ImGui::StyleColorsDark();
-			}
-			if (ImGui::MenuItem("Dark 2"))
-			{
-				SetDarkTheme();
-			}
-			if (ImGui::MenuItem("Green"))
-			{
-				SetGreenTheme();
-			}
-			if (ImGui::MenuItem("Red"))
-			{
-				SetRedTheme();
-			}
-			if (ImGui::MenuItem("Classic"))
-			{
-				ImGui::StyleColorsClassic();
-			}
+			if (ImGui::MenuItem("Light")) ImGui::StyleColorsLight();
+			if (ImGui::MenuItem("Dark 1")) ImGui::StyleColorsDark();
+			if (ImGui::MenuItem("Dark 2")) SetDarkTheme();
+			if (ImGui::MenuItem("Green")) SetGreenTheme();
+			if (ImGui::MenuItem("Red")) SetRedTheme();
+			if (ImGui::MenuItem("Classic")) ImGui::StyleColorsClassic();
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("View"))
@@ -332,16 +317,17 @@ void cms::UI::GUI::SettingsPanel()
 {
 	ImGui::Begin("Settings");
 
-	if (ImGui::TreeNodeEx("View", ImGuiTreeNodeFlags_Bullet | ImGuiTreeNodeFlags_DefaultOpen))
+	if (ImGui::TreeNodeEx("View"))
 	{
-		if (ImGui::SliderFloat("UI Scale", &m_UIScale, 1.0f, 2.0f, "%.2f"))
-		{
-			io->FontGlobalScale = m_UIScale;
-		}
+		//if (ImGui::SliderFloat("UI Scale", &m_UIScale, 1.0f, 2.0f, "%.2f"))
+		//{
+		//	io->FontGlobalScale = m_UIScale;
+		//	//io->Fonts->Fonts.Size = 15 * m_UIScale;
+		//}
 		ImGui::TreePop();
 	}
 
-	if (ImGui::TreeNodeEx("Database", ImGuiTreeNodeFlags_Bullet | ImGuiTreeNodeFlags_DefaultOpen))
+	if (ImGui::TreeNodeEx("Database"))
 	{
 		if (ImGui::Button("Connect To database"))
 		{

@@ -1,5 +1,4 @@
-#include"Core/Application.h"
-#include"Core/Serializer.h"
+#include "Core/Core.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {

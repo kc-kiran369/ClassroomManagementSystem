@@ -27,7 +27,7 @@ namespace cms::UI
 	class GUI : public Core::Layer
 	{
 	private:
-		float m_UIScale = 1.0f;
+		//float m_UIScale = 1.0f;
 
 		GLFWwindow* m_Window;
 

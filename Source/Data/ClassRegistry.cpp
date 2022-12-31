@@ -4,7 +4,6 @@ int cms::Data::ClassRegistry::MaxStudents = 48;
 
 cms::Data::ClassRegistry::ClassRegistry()
 {
-	m_Students.clear();
 }
 
 bool cms::Data::ClassRegistry::AddStudent(std::string name, int roll, std::string address)
@@ -21,9 +20,6 @@ bool cms::Data::ClassRegistry::AddStudent(std::string name, int roll, std::strin
 	else
 	{
 		m_Students.emplace_back(name, roll, address);
-
-		m_Changes = CHANGES::STUDENT_ADD;
-
 		return true;
 	}
 	return false;
@@ -31,11 +27,10 @@ bool cms::Data::ClassRegistry::AddStudent(std::string name, int roll, std::strin
 
 void cms::Data::ClassRegistry::RemoveStudent(int index)
 {
-	//m_Changes = m_Changes | CHANGES::STUDENT_REMOVE;
 	m_Students.erase(m_Students.begin() + index);
 }
 
-cms::Data::Student cms::Data::ClassRegistry::GetStudentAt(int index)
+cms::Data::Student& cms::Data::ClassRegistry::GetStudentAt(int index)
 {
 	return m_Students.at(index);
 }
@@ -48,12 +43,16 @@ unsigned int cms::Data::ClassRegistry::GetTotalStudents()
 
 void cms::Data::ClassRegistry::FillWithRandomStudents()
 {
+	if (m_RandomlyFilled)
+		return;
+
 	FillRandom random;
 	int _roll = 1;
-	int _totalStudentsInThisClass = random.RandInt(35, MaxStudents);
+	int _totalStudentsInThisClass = random.RandInt(30, MaxStudents);
 	for (int i = 0; i < _totalStudentsInThisClass; i++)
 	{
-		//This loop is to assign roll number
+		///This loop is to assign roll number
+		///Assign in ascending order
 		for (int j = _totalStudentsInThisClass; j >= 1; j--)
 		{
 			if (HasRollNo(j))
@@ -61,8 +60,10 @@ void cms::Data::ClassRegistry::FillWithRandomStudents()
 			else
 				_roll = j;
 		}
-		AddStudent(random.GetRandomText(random.RandInt(4, 7)), _roll, random.GetRandomText(random.RandInt(4, 12)));
+		AddStudent(random.GetRandomName(), _roll, random.GetRandomText(random.RandInt(4, 12)));
 	}
+	
+	m_RandomlyFilled = true;
 }
 
 bool cms::Data::ClassRegistry::HasRollNo(int roll)

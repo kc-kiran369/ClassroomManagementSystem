@@ -7,20 +7,22 @@
 #include"Student.h"
 #include"Windows/MessageBox.h"
 
+#include<fstream>
+
 namespace cms::Data
 {
-	enum class CHANGES
-	{
-		STUDENT_ADD,
-		STUDENT_REMOVE,
-		STUDENT_EDIT
-	};
-
 	class FillRandom
 	{
 	private:
 		std::string m_TmpName;
+		std::vector<std::string> names;
+		std::vector<std::string> surnames;
 	public:
+		~FillRandom()
+		{
+			names.clear();
+			surnames.clear();
+		}
 		int RandInt(int low, int high)
 		{
 			return low + rand() % (high - low + 1);
@@ -34,26 +36,49 @@ namespace cms::Data
 			}
 			return m_TmpName;
 		}
+		std::string GetRandomName()
+		{
+			std::ifstream in;
+			in.open("Resources/Data/names.txt");
+			std::string line;
+			while (std::getline(in, line))
+			{
+				names.push_back(line);
+			}
+			in.close();
+
+			in.open("Resources/Data/surnames.txt");
+			while (std::getline(in, line))
+			{
+				surnames.push_back(line);
+			}
+			in.close();
+
+			if (names.size() == 0 || surnames.size() == 0)
+				return GetRandomText(5);
+			else
+			{
+				return names[RandInt(0, (int)names.size())] + " " + surnames[RandInt(0, (int)surnames.size())];
+			}
+		}
 	};
 
 	class ClassRegistry
 	{
 	private:
-		CHANGES m_Changes;
 		std::vector<Student> m_Students;
+		bool m_RandomlyFilled = false;
 	public:
+		ClassRegistry();
+
 		static int MaxStudents;
 
-		ClassRegistry();
 		bool AddStudent(std::string name, int roll, std::string address);
 		void RemoveStudent(int index);
-
-		Student GetStudentAt(int index);
-
 		unsigned int GetTotalStudents();
+		Student& GetStudentAt(int index);
 
 		void FillWithRandomStudents();
-
 		bool HasRollNo(int roll);
 	};
 }

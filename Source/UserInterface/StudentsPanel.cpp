@@ -3,7 +3,7 @@
 void cms::UI::StudentsPanel::DrawTable(int _class)
 {
 	cms::Data::ClassRegistry& registry = (_class == 9 ? m_Registry->Class09 : (_class == 10 ? m_Registry->Class10 : (_class == 11 ? m_Registry->Class11 : m_Registry->Class12)));
-	
+
 	if (ImGui::BeginTable("Class", 5))
 	{
 		ImGui::TableNextRow();
@@ -38,7 +38,23 @@ void cms::UI::StudentsPanel::DrawTable(int _class)
 			{
 				if (ImGui::TreeNodeEx("Edit Details"))
 				{
-
+					ImGui::InputText("Enter New Name", m_TmpName, 25);
+					ImGui::InputText("Enter New Address", m_TmpAddress, 25);
+					if (ImGui::Button("Apply Edits"))
+					{
+						if (m_TmpName[0] == '\0' || m_TmpAddress[0] == '\0')
+							cms::Windows::MessageBox::Open("Enter Valid Details!!", "Classroom Management", MB_OK | MB_ICONEXCLAMATION);
+						else
+						{
+							registry.GetStudentAt(row).EditDetails(m_TmpName, m_TmpAddress);
+							cms::Windows::MessageBox::Open("Details Has Been Modified!!", "Classroom Management", MB_OK | MB_ICONINFORMATION);
+							ImGui::CloseCurrentPopup();
+						}
+					}
+					if (ImGui::IsKeyPressed(ImGuiKey_Escape,false))
+					{
+						ImGui::CloseCurrentPopup();
+					}
 					ImGui::TreePop();
 				}
 				ImGui::Separator();

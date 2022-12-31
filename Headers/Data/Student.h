@@ -14,9 +14,11 @@ namespace cms::Data
 		Student(std::string name, int roll, std::string address);
 		~Student();
 
-		std::string GetName();
-		std::string GetAddress();
+		std::string& GetName();
+		std::string& GetAddress();
 		int GetRoll();
+
+		void EditDetails(char new_name[], char new_address[]);
 	};
 }
 

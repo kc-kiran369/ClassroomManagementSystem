@@ -11,6 +11,7 @@ namespace cms::UI
 	{
 	private:
 		void DrawTable(int _class);
+		char m_TmpName[25], m_TmpAddress[25];
 	public:
 		StudentsPanel() = default;
 		StudentsPanel(Data::StudentRegistry* registry);

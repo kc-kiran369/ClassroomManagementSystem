@@ -27,7 +27,7 @@ std::string cms::Core::Serializer::GetValue(std::string& key)
 void cms::Core::Serializer::CreateConfigFile()
 {
 	std::ofstream out("config_app.cms");
-	out << "width:1000\nheight:600\nui_scale:1.2\nsystem_console:false\napp_name:Classroom Management (64-bit, windows)" << std::endl;
+	out << "width:1000\nheight:600\nfont_size:17\napp_name:Classroom Management (64-bit, windows)" << std::endl;
 	out.close();
 }
 

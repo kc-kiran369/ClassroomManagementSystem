@@ -25,11 +25,18 @@ void cms::UI::AnnouncementPanel::Draw()
 		ImGui::InputTextMultiline("Description", m_TmpAnnouncement.Description, 255);
 		if (ImGui::Button("Add", ImVec2(100, 40)))
 		{
-			m_Announcements.push_back(m_TmpAnnouncement);
-			std::fill(std::begin(m_TmpAnnouncement.Title), std::end(m_TmpAnnouncement.Title), '\0');
-			std::fill(std::begin(m_TmpAnnouncement.Description), std::end(m_TmpAnnouncement.Description), '\0');
-			IsModalEnabled = false;
-			ImGui::CloseCurrentPopup();
+			if (m_TmpAnnouncement.Title[0] == '\0' || m_TmpAnnouncement.Description[0] == '\0')
+			{
+				cms::Windows::MessageBoxW::Open("Fill Title and Description to make an announcement!!", "Classroom Management", MB_OK | MB_ICONEXCLAMATION);
+			}
+			else
+			{
+				m_Announcements.push_back(m_TmpAnnouncement);
+				std::fill(std::begin(m_TmpAnnouncement.Title), std::end(m_TmpAnnouncement.Title), '\0');
+				std::fill(std::begin(m_TmpAnnouncement.Description), std::end(m_TmpAnnouncement.Description), '\0');
+				IsModalEnabled = false;
+				ImGui::CloseCurrentPopup();
+			}
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Close", ImVec2(100, 40)))
@@ -40,11 +47,18 @@ void cms::UI::AnnouncementPanel::Draw()
 		ImGui::EndPopup();
 	}
 
-	for (int n = 0; n < m_Announcements.size(); n++)
+	if (ImGui::BeginChild("ChildFrame", ImVec2(0, 0), true))
 	{
-		ImGui::Text(m_Announcements[n].Title);
-		ImGui::BulletText(m_Announcements[n].Description);
-		ImGui::Separator();
+		for (int n = 0; n < m_Announcements.size(); n++)
+		{
+			if (ImGui::TreeNodeEx(m_Announcements[n].Title, ImGuiTreeNodeFlags_DefaultOpen))
+			{
+				ImGui::TextWrapped(m_Announcements[n].Description);
+				ImGui::TreePop();
+			}
+			ImGui::Separator();
+		}
+		ImGui::EndChild();
 	}
 
 	ImGui::End();
