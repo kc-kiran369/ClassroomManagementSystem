@@ -273,7 +273,7 @@ void cms::UI::GUI::MainMenuBar()
 		{
 			if (ImGui::MenuItem("Exit"))
 			{
-				if (cms::Windows::MessageBox::Open("Any unsaved progress will be lost!!", "Do you want to exit", MB_OKCANCEL | MB_ICONQUESTION) == 1)
+				if (cms::Windows::PromptBox::Open("Any unsaved progress will be lost!!", "Do you want to exit", MB_OKCANCEL | MB_ICONQUESTION) == 1)
 				{
 					glfwSetWindowShouldClose(m_Window, 1);
 				}
@@ -331,7 +331,7 @@ void cms::UI::GUI::SettingsPanel()
 	{
 		if (ImGui::Button("Connect To database"))
 		{
-			//Database::SqlConnector::SqlConnector();
+			cms::Database::SqlConnector::GetInstance().Connect();
 		}
 		ImGui::TreePop();
 	}

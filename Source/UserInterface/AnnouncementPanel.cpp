@@ -27,7 +27,7 @@ void cms::UI::AnnouncementPanel::Draw()
 		{
 			if (m_TmpAnnouncement.Title[0] == '\0' || m_TmpAnnouncement.Description[0] == '\0')
 			{
-				cms::Windows::MessageBoxW::Open("Fill Title and Description to make an announcement!!", "Classroom Management", MB_OK | MB_ICONEXCLAMATION);
+				cms::Windows::PromptBox::Open("Fill Title and Description to make an announcement!!", MB_OK | MB_ICONEXCLAMATION);
 			}
 			else
 			{
@@ -47,7 +47,7 @@ void cms::UI::AnnouncementPanel::Draw()
 		ImGui::EndPopup();
 	}
 
-	if (ImGui::BeginChild("ChildFrame", ImVec2(0, 0), true))
+	/*if (ImGui::BeginChild("ChildFrame", ImVec2(0, 0), true))
 	{
 		for (int n = 0; n < m_Announcements.size(); n++)
 		{
@@ -59,7 +59,7 @@ void cms::UI::AnnouncementPanel::Draw()
 			ImGui::Separator();
 		}
 		ImGui::EndChild();
-	}
+	}*/
 
 	ImGui::End();
 }

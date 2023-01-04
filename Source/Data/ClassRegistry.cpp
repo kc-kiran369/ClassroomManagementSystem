@@ -1,25 +1,28 @@
 #include"Data/ClassRegistry.h"
+#include"Database/SqlConnector.h"
 
 int cms::Data::ClassRegistry::MaxStudents = 48;
 
 cms::Data::ClassRegistry::ClassRegistry()
 {
+
 }
 
 bool cms::Data::ClassRegistry::AddStudent(std::string name, int roll, std::string address)
 {
 	if (GetTotalStudents() > 48)
 	{
-		cms::Windows::MessageBox::Open("More than 48 students cannot be admitted", "Maximum students reached", MB_OK | MB_ICONWARNING);
+		cms::Windows::PromptBox::Open("More than 48 students cannot be admitted", "Maximum students reached", MB_OK | MB_ICONWARNING);
 	}
 	else if (HasRollNo(roll))
 	{
 		std::string msg = "Student with Roll number " + std::to_string(roll) + " already exists";
-		cms::Windows::MessageBox::Open(msg.c_str(), "Student Cannot be admitted!!", MB_OK | MB_ICONEXCLAMATION);
+		cms::Windows::PromptBox::Open(msg.c_str(), MB_OK | MB_ICONEXCLAMATION);
 	}
 	else
 	{
 		m_Students.emplace_back(name, roll, address);
+		cms::Database::SqlConnector::GetInstance().Insert(name, address, roll);
 		return true;
 	}
 	return false;
@@ -58,11 +61,14 @@ void cms::Data::ClassRegistry::FillWithRandomStudents()
 			if (HasRollNo(j))
 				continue;
 			else
+			{
 				_roll = j;
+				break;
+			}
 		}
-		AddStudent(random.GetRandomName(), _roll, random.GetRandomText(random.RandInt(4, 12)));
+		AddStudent(random.GetRandomName(), _roll, random.GetRandomPlace());
 	}
-	
+
 	m_RandomlyFilled = true;
 }
 

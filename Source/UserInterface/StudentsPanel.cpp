@@ -22,11 +22,11 @@ void cms::UI::StudentsPanel::DrawTable(int _class)
 			ImGui::TableNextColumn();
 			ImGui::Text("%d", (row + 1));
 			ImGui::TableNextColumn();
-			ImGui::Text("%s", registry.GetStudentAt(row).GetName());
+			ImGui::Text(registry.GetStudentAt(row).GetName().c_str());
 			ImGui::TableNextColumn();
 			ImGui::Text("%d", registry.GetStudentAt(row).GetRoll());
 			ImGui::TableNextColumn();
-			ImGui::Text("%s", registry.GetStudentAt(row).GetAddress());
+			ImGui::Text(registry.GetStudentAt(row).GetAddress().c_str());
 			ImGui::TableNextColumn();
 
 			ImGui::PushID(row);
@@ -43,15 +43,15 @@ void cms::UI::StudentsPanel::DrawTable(int _class)
 					if (ImGui::Button("Apply Edits"))
 					{
 						if (m_TmpName[0] == '\0' || m_TmpAddress[0] == '\0')
-							cms::Windows::MessageBox::Open("Enter Valid Details!!", "Classroom Management", MB_OK | MB_ICONEXCLAMATION);
+							cms::Windows::PromptBox::Open("Enter Valid Details!!", MB_OK | MB_ICONEXCLAMATION);
 						else
 						{
 							registry.GetStudentAt(row).EditDetails(m_TmpName, m_TmpAddress);
-							cms::Windows::MessageBox::Open("Details Has Been Modified!!", "Classroom Management", MB_OK | MB_ICONINFORMATION);
+							cms::Windows::PromptBox::Open("Details Has Been Modified!!", MB_OK | MB_ICONINFORMATION);
 							ImGui::CloseCurrentPopup();
 						}
 					}
-					if (ImGui::IsKeyPressed(ImGuiKey_Escape,false))
+					if (ImGui::IsKeyPressed(ImGuiKey_Escape, false))
 					{
 						ImGui::CloseCurrentPopup();
 					}
@@ -61,13 +61,13 @@ void cms::UI::StudentsPanel::DrawTable(int _class)
 				if (ImGui::TreeNodeEx("Remove Student"))
 				{
 					ImGui::Text("The Following Student Will Be Removed");
-					ImGui::Text("Name : %s", registry.GetStudentAt(row).GetName());
+					ImGui::Text(registry.GetStudentAt(row).GetName().c_str());
 					ImGui::Text("Roll No : %d", registry.GetStudentAt(row).GetRoll());
-					ImGui::Text("Address : %s", registry.GetStudentAt(row).GetAddress());
+					ImGui::Text(registry.GetStudentAt(row).GetAddress().c_str());
 					if (ImGui::Button("Delete"))
 					{
 						registry.RemoveStudent(row);
-						cms::Windows::MessageBox::Open("Record cleared successfully!!", "Classroom Management", MB_OK | MB_ICONINFORMATION);
+						cms::Windows::PromptBox::Open("Record cleared successfully!!", MB_OK | MB_ICONINFORMATION);
 						ImGui::CloseCurrentPopup();
 					}
 					ImGui::TreePop();

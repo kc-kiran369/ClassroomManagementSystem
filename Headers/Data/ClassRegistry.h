@@ -8,6 +8,8 @@
 #include"Windows/MessageBox.h"
 
 #include<fstream>
+#include <chrono>
+#include <random>
 
 namespace cms::Data
 {
@@ -17,16 +19,19 @@ namespace cms::Data
 		std::string m_TmpName;
 		std::vector<std::string> names;
 		std::vector<std::string> surnames;
+		std::vector<std::string> places;
 	public:
 		~FillRandom()
 		{
 			names.clear();
 			surnames.clear();
+			places.clear();
 		}
 		int RandInt(int low, int high)
 		{
 			return low + rand() % (high - low + 1);
 		}
+
 		std::string GetRandomText(int length)
 		{
 			m_TmpName.clear();
@@ -40,26 +45,47 @@ namespace cms::Data
 		{
 			std::ifstream in;
 			in.open("Resources/Data/names.txt");
+
+			if (in.fail())
+			{
+				return GetRandomText(5);
+			}
+			else
+			{
+				std::string line;
+				while (std::getline(in, line))
+				{
+					if (line.size() != 0)
+						names.push_back(line);
+				}
+				in.close();
+
+				in.open("Resources/Data/surnames.txt");
+				while (std::getline(in, line))
+				{
+					if (line.size() != 0)
+						surnames.push_back(line);
+				}
+				in.close();
+				return names[RandInt(0, (int)names.size())] + " " + surnames[RandInt(0, (int)surnames.size())];
+			}
+		}
+
+		std::string GetRandomPlace()
+		{
+			std::ifstream in;
+			in.open("Resources/Data/places.txt");
 			std::string line;
 			while (std::getline(in, line))
 			{
-				names.push_back(line);
+				if (line.size() != 0)
+					places.push_back(line);
 			}
 			in.close();
-
-			in.open("Resources/Data/surnames.txt");
-			while (std::getline(in, line))
-			{
-				surnames.push_back(line);
-			}
-			in.close();
-
-			if (names.size() == 0 || surnames.size() == 0)
-				return GetRandomText(5);
+			if (places.size() == 0)
+				return GetRandomText(9);
 			else
-			{
-				return names[RandInt(0, (int)names.size())] + " " + surnames[RandInt(0, (int)surnames.size())];
-			}
+				return places[RandInt(0, (int)places.size())];
 		}
 	};
 

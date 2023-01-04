@@ -16,8 +16,8 @@ std::string cms::Core::Serializer::GetValue(std::string& key)
 	{
 		if (line.find(key) != std::string::npos)
 		{
-			return line.erase(0, key.length() + 1);
 			in.close();
+			return line.erase(0, key.length() + 1);
 		}
 	}
 	in.close();
