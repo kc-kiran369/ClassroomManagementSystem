@@ -4,16 +4,11 @@ cms::Database::SqlConnector cms::Database::SqlConnector::instance;
 
 cms::Database::SqlConnector::SqlConnector()
 {
-
-	//m_DatabaseInfo.server = "127.0.0.1:3306";
 	m_DatabaseInfo.server = "127.0.0.1";
 	m_DatabaseInfo.username = "root";
-	//m_DatabaseInfo.username = "root";
 	m_DatabaseInfo.password = "";
 	m_DatabaseInfo.database = "mydatabase";
 	m_DatabaseInfo.table = "student";
-
-	cms::Windows::PromptBox::Open("Database object created", MB_OK | MB_ICONHAND);
 }
 
 cms::Database::SqlConnector::~SqlConnector()
@@ -34,7 +29,6 @@ void cms::Database::SqlConnector::Connect()
 	catch (sql::SQLException e)
 	{
 		cms::Windows::PromptBox::Open(e.what(), MB_OK | MB_ICONEXCLAMATION);
-		//exit(0);
 	}
 }
 
@@ -62,10 +56,24 @@ void cms::Database::SqlConnector::Retrieve()
 
 void cms::Database::SqlConnector::Update(int roll, std::string& new_name, std::string& new_address)
 {
+	if (con)
+	{
+		try
+		{
 
+		}
+		catch (sql::SQLException e) {}
+	}
 }
 
 void cms::Database::SqlConnector::Delete(std::string& name, std::string& address, int roll)
 {
+	if (con)
+	{
+		try
+		{
 
+		}
+		catch (sql::SQLException e) {}
+	}
 }

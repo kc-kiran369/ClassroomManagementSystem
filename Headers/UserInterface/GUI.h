@@ -21,6 +21,7 @@
 #include"StudentsPanel.h"
 #include"NavigationPanel.h"
 #include"AnnouncementPanel.h"
+#include"SettingsPanel.h"
 
 namespace cms::UI
 {
@@ -42,9 +43,9 @@ namespace cms::UI
 		StudentsPanel studentsPanel;
 		NavigationPanel navigationPanel;
 		AnnouncementPanel announcementPanel;
+		SettingsPanel settingsPanel;
 
 		void MainMenuBar();
-		void SettingsPanel();
 		void Style();
 	public:
 		GUI(GLFWwindow* window);

@@ -71,7 +71,7 @@ void cms::UI::GUI::RenderUIElements()
 	admissionPanel.Draw();
 	navigationPanel.Draw();
 	announcementPanel.Draw();
-	SettingsPanel();
+	settingsPanel.Draw();
 }
 
 void cms::UI::GUI::SetDarkTheme()
@@ -311,30 +311,4 @@ void cms::UI::GUI::MainMenuBar()
 		}
 		ImGui::EndMainMenuBar();
 	}
-}
-
-void cms::UI::GUI::SettingsPanel()
-{
-	ImGui::Begin("Settings");
-
-	if (ImGui::TreeNodeEx("View"))
-	{
-		//if (ImGui::SliderFloat("UI Scale", &m_UIScale, 1.0f, 2.0f, "%.2f"))
-		//{
-		//	io->FontGlobalScale = m_UIScale;
-		//	//io->Fonts->Fonts.Size = 15 * m_UIScale;
-		//}
-		ImGui::TreePop();
-	}
-
-	if (ImGui::TreeNodeEx("Database"))
-	{
-		if (ImGui::Button("Connect To database"))
-		{
-			cms::Database::SqlConnector::GetInstance().Connect();
-		}
-		ImGui::TreePop();
-	}
-
-	ImGui::End();
 }

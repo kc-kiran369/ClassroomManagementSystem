@@ -44,43 +44,44 @@ void cms::UI::AdmissionPanel::Draw()
 		if (m_TmpName[0] == '\0')
 		{
 			cms::Windows::PromptBox::Open("You must enter valid name of the student", MB_OK | MB_ICONWARNING);
-			return;
 		}
-		if (m_TmpAddress[0] == '\0')
+		else if (m_TmpAddress[0] == '\0')
 		{
 			cms::Windows::PromptBox::Open("You must enter valid address of the student", MB_OK | MB_ICONWARNING);
-			return;
 		}
-		switch (m_TmpClass)
+		else
 		{
-		case 9:
-			if (m_Registry->Class09.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
+			switch (m_TmpClass)
 			{
-				cms::Windows::PromptBox::Open("Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
-			}
-			ClearTempValues();
-			break;
-		case 10:
-			if (m_Registry->Class10.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
-			{
-				cms::Windows::PromptBox::Open("Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
-			}
-			ClearTempValues();
-			break;
-		case 11:
-			if (m_Registry->Class11.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
-			{
-				cms::Windows::PromptBox::Open("Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
-			}
-			ClearTempValues();
-			break;
-		case 12:
-			if (m_Registry->Class12.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
-			{
-				cms::Windows::PromptBox::Open("Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
-			}
-			ClearTempValues();
-			break;
+			case 9:
+				if (m_Registry->Class09.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
+				{
+					cms::Windows::PromptBox::Open("Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
+				}
+				ClearTempValues();
+				break;
+			case 10:
+				if (m_Registry->Class10.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
+				{
+					cms::Windows::PromptBox::Open("Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
+				}
+				ClearTempValues();
+				break;
+			case 11:
+				if (m_Registry->Class11.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
+				{
+					cms::Windows::PromptBox::Open("Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
+				}
+				ClearTempValues();
+				break;
+			case 12:
+				if (m_Registry->Class12.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
+				{
+					cms::Windows::PromptBox::Open("Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
+				}
+				ClearTempValues();
+				break;
+			};
 		}
 	}
 	ImGui::End();

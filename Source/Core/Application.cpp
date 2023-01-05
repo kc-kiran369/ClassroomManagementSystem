@@ -18,8 +18,6 @@ void cms::Core::Application::Run()
 	std::unique_ptr<Data::StudentRegistry> registry = std::make_unique<Data::StudentRegistry>();
 	m_UserInterface->Attach(registry.get());
 
-	cms::Database::SqlConnector::GetInstance().Connect();
-
 	while (!glfwWindowShouldClose(m_Window->GetWindow()))
 	{
 		m_Window->OnUpdate();

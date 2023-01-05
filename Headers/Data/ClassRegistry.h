@@ -101,6 +101,7 @@ namespace cms::Data
 
 		bool AddStudent(std::string name, int roll, std::string address);
 		void RemoveStudent(int index);
+		void RemoveStudentByRoll(int roll);
 		unsigned int GetTotalStudents();
 		Student& GetStudentAt(int index);
 
