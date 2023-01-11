@@ -14,6 +14,13 @@
 
 namespace cms::Data
 {
+	enum StudentAdditionType
+	{
+		RANDOMLY,
+		ADMISSION,
+		DATABASE
+	};
+
 	class FillRandom
 	{
 	private:
@@ -116,33 +123,47 @@ namespace cms::Data
 		bool m_RandomlyFilled = false;
 		int m_Class;
 
-		std::vector<unsigned int> m_NewAdded;
-		std::vector<unsigned int> m_Updated;
-		std::vector<unsigned int> m_Deleted;
+		std::vector<UINT> m_NewAdded;
+		std::vector<UINT> m_Updated;
+		std::vector<UINT> m_Deleted;
 	public:
 		ClassRegistry(int _class);
 
 		static int MaxStudents;
 
-		int GetClass();
+		UINT GetClass();
 		void RemoveStudent(int index);
 		void RemoveStudentByRoll(int roll);
-		unsigned int GetTotalStudents();
+		UINT GetTotalStudents();
 		Student& GetStudentAt(int index);
 		Student& GetStudentByRoll(int roll);
-		bool AddStudent(std::string name, int roll, std::string address, int _class);
+		void EditStudentByRoll(char new_name[], char new_address[], UINT roll);
 
 		/// <summary>
-		/// Returns all the roll numbers of newly added students
+		/// Adds the student in the registry
 		/// </summary>
+		/// <param name="name">Name of the student.</param>
+		/// <param name="roll">Roll number of the student.</param>
+		/// <param name="address">Address of the student.</param>
+		/// <param name="_class">Class of the student.</param>
+		/// <param name="type">How the student is added. i,e. Admission/Randomly Filled/Retrived From Database</param>
+		/// <returns>Return true if student is added to registry.</returns>
+		bool AddStudent(std::string name, int roll, std::string address, int _class,StudentAdditionType type);
+
+		/// <summary>
+		/// Returns the reference to vector which contains all the roll number of the student who were newly added
+		/// </summary>
+		/// <returns>A Reference to vector of int</returns>
 		std::vector<unsigned int>& GetAddedList();
 		/// <summary>
-		/// Returns all the roll numbers of newly added students
+		/// Returns the reference to vector which contains all the roll number of the student who were deleted from registry
 		/// </summary>
+		/// <returns>A Reference to vector of int</returns>
 		std::vector<unsigned int>& GetDeletedList();
 		/// <summary>
-		/// Returns all the roll numbers of students whose data were updated
+		/// Returns the reference to vector which contains all the roll number of the student whose data were updated
 		/// </summary>
+		/// <returns>A Reference to vector of int</returns>
 		std::vector<unsigned int>& GetUpdatedList();
 
 		void FillWithRandomStudents();

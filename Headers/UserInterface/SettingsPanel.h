@@ -19,4 +19,4 @@ namespace cms::UI
 	};
 }
 
-#endif // !SETTINGS_PANEL
+#endif

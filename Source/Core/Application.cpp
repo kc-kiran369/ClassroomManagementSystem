@@ -1,14 +1,11 @@
 #include"Core/Application.h"
 
-void* operator new(size_t size)
+cms::Core::Application::Application()
 {
-	std::cout << "[Allocating] " << size << " bytes" << std::endl;
-	return malloc(size);
-}
-
-cms::Core::Application::Application(const char* ApplicationName, int width, int height)
-{
-	m_Window = new Window(ApplicationName, width, height);
+	m_Window = new Window(
+		cms::Core::Serializer::Instance().GetString("app_name").c_str(),
+		cms::Core::Serializer::Instance().GetInt("width"), 
+		cms::Core::Serializer::Instance().GetInt("height"));
 	m_UserInterface = new UI::GUI(m_Window->GetWindow());
 }
 
@@ -23,14 +20,11 @@ void cms::Core::Application::Run()
 	m_Window->Attach();
 	std::unique_ptr<Data::StudentRegistry> registry = std::make_unique<Data::StudentRegistry>();
 	m_UserInterface->Attach(registry.get());
-
 	cms::Database::SqlConnector::GetInstance().Connect();
-
 	while (!glfwWindowShouldClose(m_Window->GetWindow()))
 	{
 		m_Window->OnUpdate();
 		m_UserInterface->OnUpdate();
-
 		m_UserInterface->OnUpdateComplete();
 		m_Window->OnUpdateComplete();
 	}

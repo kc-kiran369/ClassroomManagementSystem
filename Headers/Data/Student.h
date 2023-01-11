@@ -1,11 +1,10 @@
 #ifndef STUDENT_H
 #define STUDENT_H
 
-#include<iostream>
+#include <iostream>
 
 namespace cms::Data
 {
-
 	class Student
 	{
 	private:

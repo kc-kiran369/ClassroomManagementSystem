@@ -49,11 +49,8 @@ void cms::UI::GUI::OnUpdate()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
-
 	ImGui::DockSpaceOverViewport();
-
 	RenderUIElements();
-
 }
 
 void cms::UI::GUI::OnUpdateComplete()
@@ -279,12 +276,12 @@ void cms::UI::GUI::MainMenuBar()
 		}
 		if (ImGui::BeginMenu("Theme"))
 		{
-			if (ImGui::MenuItem("Light")) ImGui::StyleColorsLight();
-			if (ImGui::MenuItem("Dark 1")) ImGui::StyleColorsDark();
-			if (ImGui::MenuItem("Dark 2")) SetDarkTheme();
-			if (ImGui::MenuItem("Green")) SetGreenTheme();
-			if (ImGui::MenuItem("Red")) SetRedTheme();
 			if (ImGui::MenuItem("Classic")) ImGui::StyleColorsClassic();
+			if (ImGui::MenuItem("Dark I")) ImGui::StyleColorsDark();
+			if (ImGui::MenuItem("Dark II")) SetDarkTheme();
+			if (ImGui::MenuItem("Green")) SetGreenTheme();
+			if (ImGui::MenuItem("Light")) ImGui::StyleColorsLight();
+			if (ImGui::MenuItem("Red")) SetRedTheme();
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("View"))
@@ -306,4 +303,3 @@ void cms::UI::GUI::MainMenuBar()
 		ImGui::EndMainMenuBar();
 	}
 }
-

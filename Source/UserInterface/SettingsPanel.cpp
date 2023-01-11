@@ -1,5 +1,9 @@
 #include "UserInterface\SettingsPanel.h"
 
+static ImVec4 Red(1.0f, 0.0f, 0.0f, 1.0f);
+static ImVec4 Green(0.0f, 1.0f, 0.0f, 1.0f);
+static ImVec4 Blue(0.0f, 0.0f, 1.0f, 1.0f);
+
 cms::UI::SettingsPanel::SettingsPanel()
 {
 
@@ -12,14 +16,15 @@ cms::UI::SettingsPanel::~SettingsPanel()
 
 void cms::UI::SettingsPanel::Draw()
 {
-	ImGui::Begin("Settings");
+	const bool& status = Database::SqlConnector::GetInstance().GetConnectionStatus();
+	ImGui::Begin("Settings", &m_PanelEnabled, ImGuiWindowFlags_NoCollapse);
 
 	if (ImGui::TreeNodeEx("Database", ImGuiTreeNodeFlags_Framed))
 	{
 		ImGui::Text("Database Status : ");
 		ImGui::SameLine();
-		bool status = Database::SqlConnector::GetInstance().GetConnectionStatus();
-		ImGui::TextColored((status ? ImVec4(0.0f, 1.0f, 0.0f, 1.0f) : ImVec4(1.0f, 0.0f, 0.0f, 1.0f)), (status ? "Connected" : "Not Connected"));
+		ImGui::TextColored((status ? Green : Red), (status ? "Connected" : "Not Connected"));
+
 		if (ImGui::TreeNodeEx("Database Info", ImGuiTreeNodeFlags_Framed))
 		{
 			ImGuiInputTextFlags flag = (status ? ImGuiInputTextFlags_ReadOnly : ImGuiInputTextFlags_None);
@@ -61,62 +66,69 @@ void cms::UI::SettingsPanel::Draw()
 
 		if (ImGui::TreeNodeEx("Updates", ImGuiTreeNodeFlags_Framed))
 		{
-			ImGui::Text("Updates");
-
-			if (ImGui::TreeNodeEx("New Added", ImGuiTreeNodeFlags_Framed))
+			if (ImGui::TreeNodeEx("Added", ImGuiTreeNodeFlags_Framed))
 			{
-				if (ImGui::TreeNodeEx("Class 9", ImGuiTreeNodeFlags_Framed))
-				{
-					for (unsigned int roll : m_Registry->Class09.GetAddedList())
-					{
-						ImGui::Text(m_Registry->Class09.GetStudentByRoll(roll).GetName().c_str());
-					}
-					ImGui::TreePop();
-				}
-				if (ImGui::TreeNodeEx("Class 10", ImGuiTreeNodeFlags_Framed))
-				{
-					for (unsigned int roll : m_Registry->Class10.GetAddedList())
-					{
-						ImGui::Text(m_Registry->Class10.GetStudentByRoll(roll).GetName().c_str());
-					}
-					ImGui::TreePop();
-				}
-				if (ImGui::TreeNodeEx("Class 11", ImGuiTreeNodeFlags_Framed))
-				{
-					for (unsigned int roll : m_Registry->Class11.GetAddedList())
-					{
-						ImGui::Text(m_Registry->Class11.GetStudentByRoll(roll).GetName().c_str());
-					}
-					ImGui::TreePop();
-				}
-				if (ImGui::TreeNodeEx("Class 12", ImGuiTreeNodeFlags_Framed))
-				{
-					for (unsigned int roll : m_Registry->Class12.GetAddedList())
-					{
-						ImGui::Text(m_Registry->Class12.GetStudentByRoll(roll).GetName().c_str());
-					}
-					ImGui::TreePop();
-				}
+				ImGui::Text("%d new added students in class 9", m_Registry->Class09.GetAddedList().size());
+				ImGui::Text("%d new added students in class 10", m_Registry->Class10.GetAddedList().size());
+				ImGui::Text("%d new added students in class 11", m_Registry->Class11.GetAddedList().size());
+				ImGui::Text("%d new added students in class 12", m_Registry->Class12.GetAddedList().size());
 				if (ImGui::Button("Upload New Data to database"))
 				{
-					m_Registry->Class09.UploadAddedDataToDatabase();
-					m_Registry->Class10.UploadAddedDataToDatabase();
-					m_Registry->Class11.UploadAddedDataToDatabase();
-					m_Registry->Class12.UploadAddedDataToDatabase();
+					if (status)
+					{
+						m_Registry->Class09.UploadAddedDataToDatabase();
+						m_Registry->Class10.UploadAddedDataToDatabase();
+						m_Registry->Class11.UploadAddedDataToDatabase();
+						m_Registry->Class12.UploadAddedDataToDatabase();
+					}
 				}
 				ImGui::TreePop();
 			}
 
 			if (ImGui::TreeNodeEx("Deleted", ImGuiTreeNodeFlags_Framed))
 			{
-				for (unsigned int roll : m_Registry->Class09.GetDeletedList())
+				ImGui::Text("%d students were deleted in class 9", m_Registry->Class09.GetDeletedList().size());
+				ImGui::Text("%d students were deleted in class 10", m_Registry->Class10.GetDeletedList().size());
+				ImGui::Text("%d students were deleted in class 11", m_Registry->Class11.GetDeletedList().size());
+				ImGui::Text("%d students were deleted in class 12", m_Registry->Class12.GetDeletedList().size());
+				if (ImGui::Button("Sync database with deleted students"))
 				{
-					ImGui::Text("Roll : %d", roll);
+					if (status)
+					{
+						m_Registry->Class09.SyncDeletedDataWithDatabase();
+						m_Registry->Class10.SyncDeletedDataWithDatabase();
+						m_Registry->Class11.SyncDeletedDataWithDatabase();
+						m_Registry->Class12.SyncDeletedDataWithDatabase();
+					}
+				}
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNodeEx("Updated", ImGuiTreeNodeFlags_Framed))
+			{
+				ImGui::Text("%d students were updated in class 9", m_Registry->Class09.GetUpdatedList().size());
+				ImGui::Text("%d students were updated in class 10", m_Registry->Class10.GetUpdatedList().size());
+				ImGui::Text("%d students were updated in class 11", m_Registry->Class11.GetUpdatedList().size());
+				ImGui::Text("%d students were updated in class 12", m_Registry->Class12.GetUpdatedList().size());
+				if (ImGui::Button("Update database with new information"))
+				{
+					if (status)
+					{
+						m_Registry->Class09.UpdateDataWithDatabase();
+						m_Registry->Class10.UpdateDataWithDatabase();
+						m_Registry->Class11.UpdateDataWithDatabase();
+						m_Registry->Class12.UpdateDataWithDatabase();
+					}
 				}
 				ImGui::TreePop();
 			}
 
 			ImGui::TreePop();
+		}
+
+		if (ImGui::Button("Get Data From Database"))
+		{
+			Database::SqlConnector::GetInstance().Retrieve(m_Registry);
 		}
 
 		ImGui::TreePop();

@@ -4,6 +4,7 @@ cms::Core::Window::Window(const char* AppName, int width, int height)
 {
 	glfwInit();
 	m_Window = glfwCreateWindow(width, height, AppName, nullptr, nullptr);
+	m_Name = AppName;
 	m_Width = width;
 	m_Height = height;
 }
@@ -54,8 +55,5 @@ void cms::Core::Window::ToggleSystemConsole()
 
 void cms::Core::Window::SetSystemConsoleVisible(bool Visible)
 {
-	if (Visible)
-		ShowWindow(GetConsoleWindow(), SW_HIDE);
-	else
-		ShowWindow(GetConsoleWindow(), SW_HIDE);
+	ShowWindow(GetConsoleWindow(), (Visible ? SW_HIDE : SW_SHOW));
 }

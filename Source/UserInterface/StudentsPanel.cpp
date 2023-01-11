@@ -46,7 +46,7 @@ void cms::UI::StudentsPanel::DrawTable(int _class)
 							cms::Windows::PromptBox::Open("Enter Valid Details!!", MB_OK | MB_ICONEXCLAMATION);
 						else
 						{
-							registry.GetStudentAt(row).EditDetails(m_TmpName, m_TmpAddress);
+							registry.EditStudentByRoll(m_TmpName, m_TmpAddress, registry.GetStudentAt(row).GetRoll());
 							cms::Windows::PromptBox::Open("Details Has Been Modified!!", MB_OK | MB_ICONINFORMATION);
 							ImGui::CloseCurrentPopup();
 						}

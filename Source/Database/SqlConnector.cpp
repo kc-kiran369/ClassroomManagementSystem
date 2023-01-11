@@ -71,20 +71,53 @@ void cms::Database::SqlConnector::Insert(int id, std::string& name, std::string&
 		try
 		{
 			std::string table = m_DatabaseInfo.table;
-			res = stmt->executeQuery("INSERT INTO " + table + "(StudentID,FirstName, Lastname, Roll, Class) VALUES(" + std::to_string(id) + ",\'" + name + "\', \'" + address + "\'," + std::to_string(roll) + "," + std::to_string(_class) + ")");
+			res = stmt->executeQuery("INSERT INTO " + table + "(StudentID,Name, Address, Roll, Class) VALUES(" + std::to_string(id) + ",\'" + name + "\', \'" + address + "\'," + std::to_string(roll) + "," + std::to_string(_class) + ")");
 		}
 		catch (sql::SQLException e) {}
 	}
 }
 
-void cms::Database::SqlConnector::Retrieve()
+void cms::Database::SqlConnector::Retrieve(Data::StudentRegistry* registry)
 {
 	if (con)
 	{
 		try
 		{
 			std::string table = m_DatabaseInfo.table;
-			res = stmt->executeQuery("SELECT* FROM \'" + table + "\'");
+			res = stmt->executeQuery("SELECT* FROM " + table);
+
+			int rowCount = (int)res->rowsCount();
+			if (rowCount == 0)
+			{
+				Windows::PromptBox::Open("Database is empty", MB_OK | MB_ICONINFORMATION);
+				return;
+			}
+
+			while (res->next()) {
+				UINT id = res->getUInt(1);
+				UINT roll = res->getUInt(2);
+				std::string name = res->getString(3);
+				std::string address = res->getString(4);
+				UINT class_ = res->getUInt(5);
+
+				switch (class_)
+				{
+				case (UINT)Data::CLASS::NINE:
+					registry->Class09.AddStudent(name, roll, address, (UINT)Data::CLASS::NINE, Data::StudentAdditionType::DATABASE);
+					break;
+				case (UINT)Data::CLASS::TEN:
+					registry->Class10.AddStudent(name, roll, address, (UINT)Data::CLASS::TEN, Data::StudentAdditionType::DATABASE);
+					break;
+				case (UINT)Data::CLASS::ELEVEN:
+					registry->Class11.AddStudent(name, roll, address, (UINT)Data::CLASS::ELEVEN, Data::StudentAdditionType::DATABASE);
+					break;
+				case (UINT)Data::CLASS::TWELVE:
+					registry->Class12.AddStudent(name, roll, address, (UINT)Data::CLASS::TWELVE, Data::StudentAdditionType::DATABASE);
+					break;
+				};
+			}
+			std::string msg = std::to_string(rowCount) + " rows retrieved";
+			Windows::PromptBox::Open(msg.c_str(), MB_OK | MB_ICONINFORMATION);
 		}
 		catch (sql::SQLException e) {}
 	}
@@ -111,6 +144,19 @@ void cms::Database::SqlConnector::Delete(int studentID)
 		{
 			std::string table = m_DatabaseInfo.table;
 			res = stmt->executeQuery("DELETE FROM \'" + table + "\' WHERE StudentID = \'" + std::to_string(studentID) + "\'");
+		}
+		catch (sql::SQLException e) {}
+	}
+}
+
+void cms::Database::SqlConnector::ClearDatabase()
+{
+	if (con)
+	{
+		try
+		{
+			std::string table = m_DatabaseInfo.table;
+			res = stmt->executeQuery("DELETE* FROM " + table);
 		}
 		catch (sql::SQLException e) {}
 	}

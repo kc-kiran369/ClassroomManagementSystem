@@ -13,16 +13,13 @@ namespace cms::Core
 		static Serializer instance;
 		std::string GetValue(std::string& key);
 
-		// Private constructor to prevent object creation
 		Serializer() {}
-		// Private copy constructor and assignment operator to prevent copying
 		Serializer(const Serializer&) = delete;
 		Serializer& operator=(const Serializer&) = delete;
 
 		void CreateConfigFile();
 
 	public:
-		// Public static method to access the single instance
 		static Serializer& Instance() {
 			return instance;
 		}

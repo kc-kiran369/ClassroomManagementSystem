@@ -5,19 +5,12 @@
 #include<string>
 
 #include"mysql/include/mysql/jdbc.h"
+#include"DatabaseInfo.h"
 #include"Windows/MessageBox.h"
+#include"Data/StudentRegistry.h"
 
 namespace cms::Database
 {
-	struct DatabaseInfo
-	{
-		char server[15] = "127.0.0.1";
-		char username[15] = "root";
-		char password[15] = "";
-		char database[15] = "mydatabase";
-		char table[15] = "student";
-	};
-
 	class SqlConnector
 	{
 	private:
@@ -48,9 +41,11 @@ namespace cms::Database
 		bool GetConnectionStatus();
 
 		void Insert(int id, std::string& name, std::string& address, int roll, int _class);	//Create
-		void Retrieve();	//Retrieve
+		void Retrieve(Data::StudentRegistry* registry);	//Retrieve
 		void Update(int id, std::string& new_name, std::string& new_address);	//Update
 		void Delete(int studentID);	//Delete
+
+		void ClearDatabase();
 	};
 }
 

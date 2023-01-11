@@ -15,7 +15,7 @@ namespace cms::Core
 		Window* m_Window;
 		UI::GUI* m_UserInterface;
 	public:
-		Application(const char* ApplicationName, int width, int height);
+		Application();
 		~Application();
 		void Run();
 	};

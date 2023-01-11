@@ -2,7 +2,7 @@
 
 void cms::UI::NavigationPanel::Draw()
 {
-	if (ImGui::Begin("Inspector"))
+	if (ImGui::Begin("Inspector", &m_PanelEnabled))
 	{
 		if (ImGui::Button("Dashboard", ImVec2{ ImGui::GetColumnWidth(),40.0f }))
 		{
