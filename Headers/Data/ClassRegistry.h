@@ -10,6 +10,7 @@
 #include<fstream>
 #include <chrono>
 #include <random>
+#include<string_view>
 
 namespace cms::Data
 {
@@ -20,7 +21,57 @@ namespace cms::Data
 		std::vector<std::string> names;
 		std::vector<std::string> surnames;
 		std::vector<std::string> places;
+		bool m_DataImported = false;
+
+		void ImportData()
+		{
+			if (m_DataImported)
+				return;
+
+			std::ifstream in;
+			std::string line;
+
+			in.open("Resources/Data/names.txt");
+			if (!in.fail())
+			{
+				while (std::getline(in, line))
+				{
+					if (line.size() != 0)
+						names.push_back(line);
+				}
+				in.close();
+			}
+
+			in.open("Resources/Data/surnames.txt");
+			if (!in.fail())
+			{
+				while (std::getline(in, line))
+				{
+					if (line.size() != 0)
+						surnames.push_back(line);
+				}
+				in.close();
+			}
+
+			in.open("Resources/Data/places.txt");
+			if (!in.fail())
+			{
+				while (std::getline(in, line))
+				{
+					if (line.size() != 0)
+						places.push_back(line);
+				}
+				in.close();
+			}
+
+			m_DataImported = true;
+		}
+
 	public:
+		FillRandom()
+		{
+			ImportData();
+		}
 		~FillRandom()
 		{
 			names.clear();
@@ -43,49 +94,18 @@ namespace cms::Data
 		}
 		std::string GetRandomName()
 		{
-			std::ifstream in;
-			in.open("Resources/Data/names.txt");
-
-			if (in.fail())
-			{
-				return GetRandomText(5);
-			}
+			if (names.size() == 0)
+				return GetRandomText(6);
 			else
-			{
-				std::string line;
-				while (std::getline(in, line))
-				{
-					if (line.size() != 0)
-						names.push_back(line);
-				}
-				in.close();
-
-				in.open("Resources/Data/surnames.txt");
-				while (std::getline(in, line))
-				{
-					if (line.size() != 0)
-						surnames.push_back(line);
-				}
-				in.close();
-				return names[RandInt(0, (int)names.size())] + " " + surnames[RandInt(0, (int)surnames.size())];
-			}
+				return names[RandInt(0, (int)names.size() - 1)] + " " + surnames[RandInt(0, (int)surnames.size() - 1)];
 		}
 
 		std::string GetRandomPlace()
 		{
-			std::ifstream in;
-			in.open("Resources/Data/places.txt");
-			std::string line;
-			while (std::getline(in, line))
-			{
-				if (line.size() != 0)
-					places.push_back(line);
-			}
-			in.close();
 			if (places.size() == 0)
 				return GetRandomText(9);
 			else
-				return places[RandInt(0, (int)places.size())];
+				return places[RandInt(0, (int)places.size() - 1)];
 		}
 	};
 
@@ -94,19 +114,43 @@ namespace cms::Data
 	private:
 		std::vector<Student> m_Students;
 		bool m_RandomlyFilled = false;
+		int m_Class;
+
+		std::vector<unsigned int> m_NewAdded;
+		std::vector<unsigned int> m_Updated;
+		std::vector<unsigned int> m_Deleted;
 	public:
-		ClassRegistry();
+		ClassRegistry(int _class);
 
 		static int MaxStudents;
 
-		bool AddStudent(std::string name, int roll, std::string address);
+		int GetClass();
 		void RemoveStudent(int index);
 		void RemoveStudentByRoll(int roll);
 		unsigned int GetTotalStudents();
 		Student& GetStudentAt(int index);
+		Student& GetStudentByRoll(int roll);
+		bool AddStudent(std::string name, int roll, std::string address, int _class);
+
+		/// <summary>
+		/// Returns all the roll numbers of newly added students
+		/// </summary>
+		std::vector<unsigned int>& GetAddedList();
+		/// <summary>
+		/// Returns all the roll numbers of newly added students
+		/// </summary>
+		std::vector<unsigned int>& GetDeletedList();
+		/// <summary>
+		/// Returns all the roll numbers of students whose data were updated
+		/// </summary>
+		std::vector<unsigned int>& GetUpdatedList();
 
 		void FillWithRandomStudents();
 		bool HasRollNo(int roll);
+
+		void UploadAddedDataToDatabase();
+		void SyncDeletedDataWithDatabase();
+		void UpdateDataWithDatabase();
 	};
 }
 #endif

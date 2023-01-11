@@ -23,20 +23,18 @@ void cms::UI::GUI::Attach(Data::StudentRegistry* registry)
 	SetDarkTheme();
 	Style();
 
-	io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	io->ConfigFlags |= ImGuiConfigFlags_DockingEnable | ImGuiConfigFlags_NavEnableKeyboard;
 	io->IniFilename = "config_ui.ini";
 
-	//float tmpScale = Core::Serializer::Instance().GetFloat("ui_scale");
-	//io->FontGlobalScale = tmpScale;
 	int l_FontSize = Core::Serializer::Instance().GetFloat("font_size");
 	io->FontDefault = io->Fonts->AddFontFromFileTTF("Resources/Fonts/Urbanist/static/Urbanist-Black.ttf", l_FontSize);
-
-	//m_UIScale = tmpScale;
 
 	admissionPanel.SetRegistry(m_Registry);
 	dashboardPanel.SetRegistry(m_Registry);
 	studentsPanel.SetRegistry(m_Registry);
 	navigationPanel.SetRegistry(m_Registry);
+	settingsPanel.SetRegistry(m_Registry);
+	announcementPanel.SetRegistry(m_Registry);
 }
 
 void cms::UI::GUI::Detach()
@@ -55,6 +53,7 @@ void cms::UI::GUI::OnUpdate()
 	ImGui::DockSpaceOverViewport();
 
 	RenderUIElements();
+
 }
 
 void cms::UI::GUI::OnUpdateComplete()
@@ -271,12 +270,10 @@ void cms::UI::GUI::MainMenuBar()
 	{
 		if (ImGui::BeginMenu("File"))
 		{
-			if (ImGui::MenuItem("Exit"))
+			if (ImGui::MenuItem("Exit", "Ctrl+Q"))
 			{
 				if (cms::Windows::PromptBox::Open("Any unsaved progress will be lost!!", "Do you want to exit", MB_OKCANCEL | MB_ICONQUESTION) == 1)
-				{
 					glfwSetWindowShouldClose(m_Window, 1);
-				}
 			}
 			ImGui::EndMenu();
 		}
@@ -302,13 +299,11 @@ void cms::UI::GUI::MainMenuBar()
 		{
 			if (ImGui::MenuItem("Fill Random Data"))
 			{
-				m_Registry->Class09.FillWithRandomStudents();
-				m_Registry->Class10.FillWithRandomStudents();
-				m_Registry->Class11.FillWithRandomStudents();
-				m_Registry->Class12.FillWithRandomStudents();
+				m_Registry->FillWithRandomData();
 			}
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
 	}
 }
+

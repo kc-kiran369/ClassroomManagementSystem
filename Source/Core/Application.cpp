@@ -1,5 +1,11 @@
 #include"Core/Application.h"
 
+void* operator new(size_t size)
+{
+	std::cout << "[Allocating] " << size << " bytes" << std::endl;
+	return malloc(size);
+}
+
 cms::Core::Application::Application(const char* ApplicationName, int width, int height)
 {
 	m_Window = new Window(ApplicationName, width, height);
@@ -17,6 +23,8 @@ void cms::Core::Application::Run()
 	m_Window->Attach();
 	std::unique_ptr<Data::StudentRegistry> registry = std::make_unique<Data::StudentRegistry>();
 	m_UserInterface->Attach(registry.get());
+
+	cms::Database::SqlConnector::GetInstance().Connect();
 
 	while (!glfwWindowShouldClose(m_Window->GetWindow()))
 	{

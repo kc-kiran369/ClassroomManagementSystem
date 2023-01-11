@@ -1,7 +1,11 @@
 #include"Data/Student.h"
 
+static int IdCount = 1;
+
 cms::Data::Student::Student(std::string name, int roll, std::string address)
 {
+	m_ID = IdCount;
+	IdCount++;
 	m_Name = name;
 	m_RollNo = roll;
 	m_Address = address;
@@ -25,6 +29,11 @@ std::string& cms::Data::Student::GetAddress()
 int cms::Data::Student::GetRoll()
 {
 	return m_RollNo;
+}
+
+int cms::Data::Student::GetID()
+{
+	return m_ID;
 }
 
 void cms::Data::Student::EditDetails(char new_name[], char new_address[])

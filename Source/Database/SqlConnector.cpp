@@ -4,16 +4,37 @@ cms::Database::SqlConnector cms::Database::SqlConnector::instance;
 
 cms::Database::SqlConnector::SqlConnector()
 {
-	m_DatabaseInfo.server = "127.0.0.1";
-	m_DatabaseInfo.username = "root";
-	m_DatabaseInfo.password = "";
-	m_DatabaseInfo.database = "mydatabase";
-	m_DatabaseInfo.table = "student";
+
 }
 
 cms::Database::SqlConnector::~SqlConnector()
 {
 	delete con;
+}
+
+void cms::Database::SqlConnector::ChangeServer(const char* server)
+{
+	memcpy_s(m_DatabaseInfo.server, sizeof(m_DatabaseInfo.server), server, sizeof(server));
+}
+
+void cms::Database::SqlConnector::ChangeUser(const char* user)
+{
+	memcpy_s(m_DatabaseInfo.username, sizeof(m_DatabaseInfo.username), user, sizeof(user));
+}
+
+void cms::Database::SqlConnector::ChangPassword(const char* password)
+{
+	memcpy_s(m_DatabaseInfo.password, sizeof(m_DatabaseInfo.password), password, sizeof(password));
+}
+
+void cms::Database::SqlConnector::ChangDatabase(const char* database)
+{
+	memcpy_s(m_DatabaseInfo.database, sizeof(m_DatabaseInfo.database), database, sizeof(database));
+}
+
+void cms::Database::SqlConnector::ChangeTable(const char* table)
+{
+	memcpy_s(m_DatabaseInfo.table, sizeof(m_DatabaseInfo.table), table, sizeof(table));
 }
 
 void cms::Database::SqlConnector::Connect()
@@ -29,6 +50,7 @@ void cms::Database::SqlConnector::Connect()
 	catch (sql::SQLException e)
 	{
 		cms::Windows::PromptBox::Open(e.what(), MB_OK | MB_ICONEXCLAMATION);
+		cms::Windows::PromptBox::Open("Any changes will not be uploaded in database", MB_OK | MB_ICONEXCLAMATION);
 	}
 }
 
@@ -37,13 +59,19 @@ cms::Database::DatabaseInfo& cms::Database::SqlConnector::GetDatabaseInfo()
 	return m_DatabaseInfo;
 }
 
-void cms::Database::SqlConnector::Insert(std::string& name, std::string& address, int roll)
+bool cms::Database::SqlConnector::GetConnectionStatus()
+{
+	return (con ? true : false);
+}
+
+void cms::Database::SqlConnector::Insert(int id, std::string& name, std::string& address, int roll, int _class)
 {
 	if (con)
 	{
 		try
 		{
-			res = stmt->executeQuery("INSERT INTO " + m_DatabaseInfo.table + "(FirstName, Lastname, Roll) VALUES(\'" + name + "\', \'" + address + "\'," + std::to_string(roll) + ")");
+			std::string table = m_DatabaseInfo.table;
+			res = stmt->executeQuery("INSERT INTO " + table + "(StudentID,FirstName, Lastname, Roll, Class) VALUES(" + std::to_string(id) + ",\'" + name + "\', \'" + address + "\'," + std::to_string(roll) + "," + std::to_string(_class) + ")");
 		}
 		catch (sql::SQLException e) {}
 	}
@@ -51,28 +79,38 @@ void cms::Database::SqlConnector::Insert(std::string& name, std::string& address
 
 void cms::Database::SqlConnector::Retrieve()
 {
-
-}
-
-void cms::Database::SqlConnector::Update(int roll, std::string& new_name, std::string& new_address)
-{
 	if (con)
 	{
 		try
 		{
-
+			std::string table = m_DatabaseInfo.table;
+			res = stmt->executeQuery("SELECT* FROM \'" + table + "\'");
 		}
 		catch (sql::SQLException e) {}
 	}
 }
 
-void cms::Database::SqlConnector::Delete(std::string& name, std::string& address, int roll)
+void cms::Database::SqlConnector::Update(int id, std::string& new_name, std::string& new_address)
 {
 	if (con)
 	{
 		try
 		{
+			std::string table = m_DatabaseInfo.table;
+			res = stmt->executeQuery("UPDATE " + table + "SET Name = \'" + new_name + "\', Address = \'" + new_address + "\' WHERE StudentID = " + std::to_string(id));
+		}
+		catch (sql::SQLException e) {}
+	}
+}
 
+void cms::Database::SqlConnector::Delete(int studentID)
+{
+	if (con)
+	{
+		try
+		{
+			std::string table = m_DatabaseInfo.table;
+			res = stmt->executeQuery("DELETE FROM \'" + table + "\' WHERE StudentID = \'" + std::to_string(studentID) + "\'");
 		}
 		catch (sql::SQLException e) {}
 	}

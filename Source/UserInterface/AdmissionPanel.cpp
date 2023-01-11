@@ -29,13 +29,13 @@ void cms::UI::AdmissionPanel::Draw()
 	ImGui::Begin("Admission", &m_PanelEnabled);
 
 	ImGui::Text("Name : ");
-	ImGui::InputText("Name", m_TmpName, 25);
+	ImGui::InputText("##Name", m_TmpName, 25);
 	ImGui::Text("Address : ");
-	ImGui::InputText("Address", m_TmpAddress, 25);
+	ImGui::InputText("##Address", m_TmpAddress, 25);
 	ImGui::Text("Roll : ");
-	ImGui::SliderInt("Roll", &m_TmpRoll, 1, Data::ClassRegistry::MaxStudents, "%d");
+	ImGui::SliderInt("##Roll", &m_TmpRoll, 1, Data::ClassRegistry::MaxStudents, "%d");
 	ImGui::Text("Class : ");
-	if (ImGui::Combo("Class", &m_ClassIndex, m_Classes, 4))
+	if (ImGui::Combo("##Class", &m_ClassIndex, m_Classes, 4))
 	{
 		m_TmpClass = (m_ClassIndex + 9);
 	}
@@ -54,28 +54,28 @@ void cms::UI::AdmissionPanel::Draw()
 			switch (m_TmpClass)
 			{
 			case 9:
-				if (m_Registry->Class09.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
+				if (m_Registry->Class09.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress, 9))
 				{
 					cms::Windows::PromptBox::Open("Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
 				}
 				ClearTempValues();
 				break;
 			case 10:
-				if (m_Registry->Class10.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
+				if (m_Registry->Class10.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress, 10))
 				{
 					cms::Windows::PromptBox::Open("Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
 				}
 				ClearTempValues();
 				break;
 			case 11:
-				if (m_Registry->Class11.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
+				if (m_Registry->Class11.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress, 11))
 				{
 					cms::Windows::PromptBox::Open("Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
 				}
 				ClearTempValues();
 				break;
 			case 12:
-				if (m_Registry->Class12.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress))
+				if (m_Registry->Class12.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress, 12))
 				{
 					cms::Windows::PromptBox::Open("Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
 				}

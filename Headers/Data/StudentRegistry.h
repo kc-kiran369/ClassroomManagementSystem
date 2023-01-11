@@ -7,15 +7,20 @@
 
 namespace cms::Data
 {
+	enum class CLASS { NINE = 9, TEN, ELEVEN, TWELVE };
+
 	class StudentRegistry
 	{
 	public:
 		StudentRegistry();
 		~StudentRegistry();
-		ClassRegistry Class09;
-		ClassRegistry Class10;
-		ClassRegistry Class11;
-		ClassRegistry Class12;
+
+		ClassRegistry Class09 = ClassRegistry((int)CLASS::NINE);
+		ClassRegistry Class10 = ClassRegistry((int)CLASS::TEN);
+		ClassRegistry Class11 = ClassRegistry((int)CLASS::ELEVEN);
+		ClassRegistry Class12 = ClassRegistry((int)CLASS::TWELVE);
+
+		void FillWithRandomData();
 
 		unsigned int GetTotalStudents();
 	};

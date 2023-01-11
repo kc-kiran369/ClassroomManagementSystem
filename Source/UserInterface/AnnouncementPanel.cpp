@@ -47,20 +47,15 @@ void cms::UI::AnnouncementPanel::Draw()
 		ImGui::EndPopup();
 	}
 
-	/*if (ImGui::BeginChild("ChildFrame", ImVec2(0, 0), true))
+	for (const auto& announcement : m_Announcements)
 	{
-		for (int n = 0; n < m_Announcements.size(); n++)
+		if (ImGui::TreeNodeEx(announcement.Title, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_Bullet))
 		{
-			if (ImGui::TreeNodeEx(m_Announcements[n].Title, ImGuiTreeNodeFlags_DefaultOpen))
-			{
-				ImGui::TextWrapped(m_Announcements[n].Description);
-				ImGui::TreePop();
-			}
-			ImGui::Separator();
+			ImGui::TextWrapped(announcement.Description);
+			ImGui::TreePop();
 		}
-		ImGui::EndChild();
-	}*/
-
+		ImGui::Separator();
+	}
 	ImGui::End();
 }
 

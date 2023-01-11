@@ -28,8 +28,6 @@ namespace cms::UI
 	class GUI : public Core::Layer
 	{
 	private:
-		//float m_UIScale = 1.0f;
-
 		GLFWwindow* m_Window;
 
 		ImGuiIO* io;
@@ -64,5 +62,4 @@ namespace cms::UI
 		void SetRedTheme();
 	};
 }
-
 #endif
