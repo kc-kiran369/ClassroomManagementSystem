@@ -126,12 +126,13 @@ void cms::UI::SettingsPanel::Draw()
 			ImGui::TreePop();
 		}
 
-		if (ImGui::Button("Get Data From Database"))
+		if (ImGui::Button("Retrieve Data From Database"))
 		{
 			Database::SqlConnector::GetInstance().Retrieve(m_Registry);
 		}
 
 		ImGui::TreePop();
+
 	}
 	ImGui::End();
 }

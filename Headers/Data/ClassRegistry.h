@@ -11,10 +11,11 @@
 #include <chrono>
 #include <random>
 #include<string_view>
+#include<unordered_map>
 
 namespace cms::Data
 {
-	enum StudentAdditionType
+	enum class StudentAdditionType
 	{
 		RANDOMLY,
 		ADMISSION,
@@ -125,11 +126,12 @@ namespace cms::Data
 
 		std::vector<UINT> m_NewAdded;
 		std::vector<UINT> m_Updated;
-		std::vector<UINT> m_Deleted;
+		std::unordered_map<UINT, UINT> m_Deleted;
 	public:
 		ClassRegistry(int _class);
+		~ClassRegistry();
 
-		static int MaxStudents;
+		static int MaxStudents, AutoID;
 
 		UINT GetClass();
 		void RemoveStudent(int index);
@@ -142,29 +144,32 @@ namespace cms::Data
 		/// <summary>
 		/// Adds the student in the registry
 		/// </summary>
+		/// <param name="id">Unique Id of student. Pass AutoID to automatically add id.</param>
 		/// <param name="name">Name of the student.</param>
 		/// <param name="roll">Roll number of the student.</param>
 		/// <param name="address">Address of the student.</param>
 		/// <param name="_class">Class of the student.</param>
 		/// <param name="type">How the student is added. i,e. Admission/Randomly Filled/Retrived From Database</param>
 		/// <returns>Return true if student is added to registry.</returns>
-		bool AddStudent(std::string name, int roll, std::string address, int _class,StudentAdditionType type);
+		bool AddStudent(UINT id, std::string name, int roll, std::string address, int _class, StudentAdditionType type);
 
 		/// <summary>
 		/// Returns the reference to vector which contains all the roll number of the student who were newly added
 		/// </summary>
 		/// <returns>A Reference to vector of int</returns>
-		std::vector<unsigned int>& GetAddedList();
+		std::vector<UINT>& GetAddedList();
 		/// <summary>
-		/// Returns the reference to vector which contains all the roll number of the student who were deleted from registry
+		/// Returns the reference to unordered map which contains all the roll number of the student who were deleted from registry
+		///  - First element of map is id of the student
+		///  - Second element of map is roll number of the student
 		/// </summary>
-		/// <returns>A Reference to vector of int</returns>
-		std::vector<unsigned int>& GetDeletedList();
+		/// <returns>A Reference to Unordered Map of 2 Uint</returns>
+		std::unordered_map<UINT, UINT>& GetDeletedList();
 		/// <summary>
 		/// Returns the reference to vector which contains all the roll number of the student whose data were updated
 		/// </summary>
 		/// <returns>A Reference to vector of int</returns>
-		std::vector<unsigned int>& GetUpdatedList();
+		std::vector<UINT>& GetUpdatedList();
 
 		void FillWithRandomStudents();
 		bool HasRollNo(int roll);

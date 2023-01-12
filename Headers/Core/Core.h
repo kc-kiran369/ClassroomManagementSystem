@@ -2,3 +2,4 @@
 #include "Layer.h"
 #include "Serializer.h"
 #include "Window.h"
+#include "CMS.h"

@@ -21,8 +21,7 @@ namespace cms::Data
 		ClassRegistry Class12 = ClassRegistry((int)CLASS::TWELVE);
 
 		void FillWithRandomData();
-
-		unsigned int GetTotalStudents();
+		UINT GetTotalStudents();
 	};
 }
 

@@ -3,8 +3,9 @@
 
 #include<iostream>
 #include<Windows.h>
-#include"Layer.h"
 #include<glfw/glfw3.h>
+
+#include"Layer.h"
 
 namespace cms::Core
 {

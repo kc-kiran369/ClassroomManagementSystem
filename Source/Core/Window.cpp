@@ -1,12 +1,10 @@
 #include"Core/Window.h"
 
 cms::Core::Window::Window(const char* AppName, int width, int height)
+	:m_Name(AppName), m_Width(width), m_Height(height)
 {
 	glfwInit();
 	m_Window = glfwCreateWindow(width, height, AppName, nullptr, nullptr);
-	m_Name = AppName;
-	m_Width = width;
-	m_Height = height;
 }
 
 cms::Core::Window::~Window()
@@ -55,5 +53,5 @@ void cms::Core::Window::ToggleSystemConsole()
 
 void cms::Core::Window::SetSystemConsoleVisible(bool Visible)
 {
-	ShowWindow(GetConsoleWindow(), (Visible ? SW_HIDE : SW_SHOW));
+	ShowWindow(GetConsoleWindow(), (Visible ? SW_SHOW : SW_HIDE));
 }

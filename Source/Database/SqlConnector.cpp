@@ -71,7 +71,7 @@ void cms::Database::SqlConnector::Insert(int id, std::string& name, std::string&
 		try
 		{
 			std::string table = m_DatabaseInfo.table;
-			res = stmt->executeQuery("INSERT INTO " + table + "(StudentID,Name, Address, Roll, Class) VALUES(" + std::to_string(id) + ",\'" + name + "\', \'" + address + "\'," + std::to_string(roll) + "," + std::to_string(_class) + ")");
+			res = stmt->executeQuery("INSERT INTO " + table + " (StudentID,Name, Address, Roll, Class) VALUES(" + std::to_string(id) + ",\'" + name + "\', \'" + address + "\'," + std::to_string(roll) + "," + std::to_string(_class) + ")");
 		}
 		catch (sql::SQLException e) {}
 	}
@@ -103,16 +103,16 @@ void cms::Database::SqlConnector::Retrieve(Data::StudentRegistry* registry)
 				switch (class_)
 				{
 				case (UINT)Data::CLASS::NINE:
-					registry->Class09.AddStudent(name, roll, address, (UINT)Data::CLASS::NINE, Data::StudentAdditionType::DATABASE);
+					registry->Class09.AddStudent(id, name, roll, address, (UINT)Data::CLASS::NINE, Data::StudentAdditionType::DATABASE);
 					break;
 				case (UINT)Data::CLASS::TEN:
-					registry->Class10.AddStudent(name, roll, address, (UINT)Data::CLASS::TEN, Data::StudentAdditionType::DATABASE);
+					registry->Class10.AddStudent(id, name, roll, address, (UINT)Data::CLASS::TEN, Data::StudentAdditionType::DATABASE);
 					break;
 				case (UINT)Data::CLASS::ELEVEN:
-					registry->Class11.AddStudent(name, roll, address, (UINT)Data::CLASS::ELEVEN, Data::StudentAdditionType::DATABASE);
+					registry->Class11.AddStudent(id, name, roll, address, (UINT)Data::CLASS::ELEVEN, Data::StudentAdditionType::DATABASE);
 					break;
 				case (UINT)Data::CLASS::TWELVE:
-					registry->Class12.AddStudent(name, roll, address, (UINT)Data::CLASS::TWELVE, Data::StudentAdditionType::DATABASE);
+					registry->Class12.AddStudent(id, name, roll, address, (UINT)Data::CLASS::TWELVE, Data::StudentAdditionType::DATABASE);
 					break;
 				};
 			}
@@ -130,7 +130,7 @@ void cms::Database::SqlConnector::Update(int id, std::string& new_name, std::str
 		try
 		{
 			std::string table = m_DatabaseInfo.table;
-			res = stmt->executeQuery("UPDATE " + table + "SET Name = \'" + new_name + "\', Address = \'" + new_address + "\' WHERE StudentID = " + std::to_string(id));
+			res = stmt->executeQuery("UPDATE " + table + " SET Name = \'" + new_name + "\', Address = \'" + new_address + "\' WHERE StudentID = " + std::to_string(id));
 		}
 		catch (sql::SQLException e) {}
 	}
@@ -143,7 +143,8 @@ void cms::Database::SqlConnector::Delete(int studentID)
 		try
 		{
 			std::string table = m_DatabaseInfo.table;
-			res = stmt->executeQuery("DELETE FROM \'" + table + "\' WHERE StudentID = \'" + std::to_string(studentID) + "\'");
+			std::cout << "DELETE FROM " + table + " WHERE StudentID = " + std::to_string(studentID) << std::endl;
+			res = stmt->executeQuery("DELETE FROM " + table + " WHERE StudentID = " + std::to_string(studentID));
 		}
 		catch (sql::SQLException e) {}
 	}

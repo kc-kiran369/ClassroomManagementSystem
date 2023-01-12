@@ -3,6 +3,7 @@
 
 #include<iostream>
 #include<memory>
+
 #include"Window.h"
 #include"UserInterface/GUI.h"
 #include"Data/StudentRegistry.h"

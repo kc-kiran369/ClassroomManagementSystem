@@ -2,10 +2,15 @@
 #include"Database/SqlConnector.h"
 
 int cms::Data::ClassRegistry::MaxStudents = 30;
+int cms::Data::ClassRegistry::AutoID = -10;
 
 cms::Data::ClassRegistry::ClassRegistry(int _class)
 {
 	m_Class = _class;
+}
+
+cms::Data::ClassRegistry::~ClassRegistry()
+{
 }
 
 void cms::Data::ClassRegistry::EditStudentByRoll(char new_name[], char new_address[], UINT roll)
@@ -19,7 +24,7 @@ std::vector<UINT>& cms::Data::ClassRegistry::GetAddedList()
 	return m_NewAdded;
 }
 
-std::vector<UINT>& cms::Data::ClassRegistry::GetDeletedList()
+std::unordered_map<UINT, UINT>& cms::Data::ClassRegistry::GetDeletedList()
 {
 	return m_Deleted;
 }
@@ -41,13 +46,27 @@ void cms::Data::ClassRegistry::UploadAddedDataToDatabase()
 
 void cms::Data::ClassRegistry::SyncDeletedDataWithDatabase()
 {
+	for (int i = 0; i < m_Deleted.size(); i++)
+	{
+		for (auto it : m_Deleted)
+		{
+			cms::Database::SqlConnector::GetInstance().Delete(it.first);
+		}
+	}
+	m_Deleted.clear();
 }
 
 void cms::Data::ClassRegistry::UpdateDataWithDatabase()
 {
+	for (int i = 0; i < m_Updated.size(); i++)
+	{
+		Student student = GetStudentByRoll(m_Updated[i]);
+		cms::Database::SqlConnector::GetInstance().Update(student.GetID(), student.GetName(), student.GetAddress());
+	}
+	m_Updated.clear();
 }
 
-bool cms::Data::ClassRegistry::AddStudent(std::string name, int roll, std::string address, int _class, StudentAdditionType type)
+bool cms::Data::ClassRegistry::AddStudent(UINT id, std::string name, int roll, std::string address, int _class, StudentAdditionType type)
 {
 	if (GetTotalStudents() > MaxStudents)
 	{
@@ -64,7 +83,16 @@ bool cms::Data::ClassRegistry::AddStudent(std::string name, int roll, std::strin
 	}
 	else
 	{
-		m_Students.emplace_back(name, roll, address);
+		if (id == AutoID)
+			m_Students.emplace_back(name, roll, address);
+		else
+			m_Students.emplace_back(id, name, roll, address);
+
+		std::cout << "ID : " << (id == AutoID ? "AUTO" : std::to_string(id)) << std::endl;
+		std::cout << "NAME : " << name << std::endl;
+		std::cout << "Roll : " << std::to_string(roll) << std::endl;
+		std::cout << "Address : " << address << std::endl;
+
 		if (type != StudentAdditionType::DATABASE)
 			m_NewAdded.push_back(roll);
 		return true;
@@ -75,8 +103,8 @@ bool cms::Data::ClassRegistry::AddStudent(std::string name, int roll, std::strin
 void cms::Data::ClassRegistry::RemoveStudent(int index)
 {
 	auto student = (m_Students.begin() + index);
+	m_Deleted[student->GetID()] = student->GetRoll();
 	m_Students.erase(student);
-	m_Deleted.push_back(student->GetRoll());
 }
 
 void cms::Data::ClassRegistry::RemoveStudentByRoll(int roll)
@@ -130,7 +158,7 @@ void cms::Data::ClassRegistry::FillWithRandomStudents()
 				break;
 			}
 		}
-		AddStudent(random.GetRandomName(), _roll, random.GetRandomPlace(), this->GetClass(),StudentAdditionType::RANDOMLY);
+		AddStudent(AutoID, random.GetRandomName(), _roll, random.GetRandomPlace(), this->GetClass(), StudentAdditionType::RANDOMLY);
 	}
 	m_RandomlyFilled = true;
 }

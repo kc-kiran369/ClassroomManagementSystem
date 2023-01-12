@@ -18,7 +18,7 @@ void cms::Data::StudentRegistry::FillWithRandomData()
 	Class12.FillWithRandomStudents();
 }
 
-unsigned int cms::Data::StudentRegistry::GetTotalStudents()
+UINT cms::Data::StudentRegistry::GetTotalStudents()
 {
-	return (unsigned int)Class09.GetTotalStudents() + Class10.GetTotalStudents() + Class11.GetTotalStudents() + Class12.GetTotalStudents();
+	return (UINT)Class09.GetTotalStudents() + Class10.GetTotalStudents() + Class11.GetTotalStudents() + Class12.GetTotalStudents();
 }

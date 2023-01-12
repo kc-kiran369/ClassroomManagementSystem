@@ -3,13 +3,13 @@
 static int IdCount = 1;
 
 cms::Data::Student::Student(std::string name, int roll, std::string address)
+	:m_ID(IdCount), m_Name(name), m_RollNo(roll), m_Address(address)
 {
-	m_ID = IdCount;
 	IdCount++;
-	m_Name = name;
-	m_RollNo = roll;
-	m_Address = address;
 }
+
+cms::Data::Student::Student(unsigned int id, std::string name, int roll, std::string address)
+	: m_ID(id), m_Name(name), m_RollNo(roll), m_Address(address) {}
 
 cms::Data::Student::~Student()
 {

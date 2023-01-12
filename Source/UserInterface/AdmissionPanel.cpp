@@ -54,28 +54,28 @@ void cms::UI::AdmissionPanel::Draw()
 			switch (m_TmpClass)
 			{
 			case 9:
-				if (m_Registry->Class09.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress, 9, Data::StudentAdditionType::ADMISSION))
+				if (m_Registry->Class09.AddStudent(Data::ClassRegistry::AutoID, m_TmpName, m_TmpRoll, m_TmpAddress, 9, Data::StudentAdditionType::ADMISSION))
 				{
 					cms::Windows::PromptBox::Open("Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
 				}
 				ClearTempValues();
 				break;
 			case 10:
-				if (m_Registry->Class10.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress, 10, Data::StudentAdditionType::ADMISSION))
+				if (m_Registry->Class10.AddStudent(Data::ClassRegistry::AutoID, m_TmpName, m_TmpRoll, m_TmpAddress, 10, Data::StudentAdditionType::ADMISSION))
 				{
 					cms::Windows::PromptBox::Open("Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
 				}
 				ClearTempValues();
 				break;
 			case 11:
-				if (m_Registry->Class11.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress, 11, Data::StudentAdditionType::ADMISSION))
+				if (m_Registry->Class11.AddStudent(Data::ClassRegistry::AutoID, m_TmpName, m_TmpRoll, m_TmpAddress, 11, Data::StudentAdditionType::ADMISSION))
 				{
 					cms::Windows::PromptBox::Open("Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
 				}
 				ClearTempValues();
 				break;
 			case 12:
-				if (m_Registry->Class12.AddStudent(m_TmpName, m_TmpRoll, m_TmpAddress, 12, Data::StudentAdditionType::ADMISSION))
+				if (m_Registry->Class12.AddStudent(Data::ClassRegistry::AutoID, m_TmpName, m_TmpRoll, m_TmpAddress, 12, Data::StudentAdditionType::ADMISSION))
 				{
 					cms::Windows::PromptBox::Open("Student Admitted Successfully!!", MB_OKCANCEL | MB_ICONINFORMATION);
 				}

@@ -12,6 +12,7 @@ namespace cms::Data
 		int m_RollNo, m_ID;
 	public:
 		Student(std::string name, int roll, std::string address);
+		Student(unsigned int id, std::string name, int roll, std::string address);
 		~Student();
 
 		std::string& GetName();
