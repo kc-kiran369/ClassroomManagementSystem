@@ -7,6 +7,7 @@
 #include"Window.h"
 #include"UserInterface/GUI.h"
 #include"Data/StudentRegistry.h"
+#include"Benchmark/Logger.h"
 
 namespace cms::Core
 {

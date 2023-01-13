@@ -3,6 +3,7 @@
 
 #include"imgui/imgui.h"
 #include "Data/StudentRegistry.h"
+#include "Data/Student.h"
 #include"Panel.h"
 
 namespace cms::UI

@@ -6,6 +6,7 @@
 #include<glfw/glfw3.h>
 
 #include"Layer.h"
+#include"Benchmark/Logger.h"
 
 namespace cms::Core
 {

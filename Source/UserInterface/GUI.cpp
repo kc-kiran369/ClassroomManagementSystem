@@ -35,6 +35,7 @@ void cms::UI::GUI::Attach(Data::StudentRegistry* registry)
 	navigationPanel.SetRegistry(m_Registry);
 	settingsPanel.SetRegistry(m_Registry);
 	announcementPanel.SetRegistry(m_Registry);
+
 }
 
 void cms::UI::GUI::Detach()
@@ -284,14 +285,14 @@ void cms::UI::GUI::MainMenuBar()
 			if (ImGui::MenuItem("Red")) SetRedTheme();
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("View"))
+		/*if (ImGui::BeginMenu("View"))
 		{
 			if (ImGui::MenuItem("Toggle System Console"))
 			{
 				Core::Window::ToggleSystemConsole();
 			}
 			ImGui::EndMenu();
-		}
+		}*/
 		if (ImGui::BeginMenu("Tools"))
 		{
 			if (ImGui::MenuItem("Fill Random Data"))

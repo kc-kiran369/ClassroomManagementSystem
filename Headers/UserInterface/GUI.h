@@ -23,6 +23,8 @@
 #include"AnnouncementPanel.h"
 #include"SettingsPanel.h"
 
+#include"Benchmark/Logger.h"
+
 namespace cms::UI
 {
 	class GUI : public Core::Layer

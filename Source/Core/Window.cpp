@@ -5,6 +5,7 @@ cms::Core::Window::Window(const char* AppName, int width, int height)
 {
 	glfwInit();
 	m_Window = glfwCreateWindow(width, height, AppName, nullptr, nullptr);
+
 }
 
 cms::Core::Window::~Window()

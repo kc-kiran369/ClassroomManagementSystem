@@ -18,15 +18,16 @@ void cms::UI::StudentsPanel::DrawTable(int _class)
 
 		for (int row = 0; row < registry.GetTotalStudents(); row++)
 		{
+			Data::Student& student = registry.GetStudentAt(row);
 			ImGui::TableNextRow();
 			ImGui::TableNextColumn();
 			ImGui::Text("%d", (row + 1));
 			ImGui::TableNextColumn();
-			ImGui::Text(registry.GetStudentAt(row).GetName().c_str());
+			ImGui::Text(student.GetName().c_str());
 			ImGui::TableNextColumn();
 			ImGui::Text("%d", registry.GetStudentAt(row).GetRoll());
 			ImGui::TableNextColumn();
-			ImGui::Text(registry.GetStudentAt(row).GetAddress().c_str());
+			ImGui::Text(student.GetAddress().c_str());
 			ImGui::TableNextColumn();
 
 			ImGui::PushID(row);
@@ -34,12 +35,22 @@ void cms::UI::StudentsPanel::DrawTable(int _class)
 			{
 				ImGui::OpenPopup("ContextMenu");
 			}
-			if (ImGui::BeginPopupModal("ContextMenu", (bool*)0, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize))
+			if (ImGui::BeginPopupModal("ContextMenu", (bool*)0, ImGuiWindowFlags_AlwaysAutoResize))
 			{
-				if (ImGui::TreeNodeEx("Edit Details"))
+				if (ImGui::TreeNodeEx("Edit Details", ImGuiTreeNodeFlags_Framed))
 				{
-					ImGui::InputText("Enter New Name", m_TmpName, 25);
-					ImGui::InputText("Enter New Address", m_TmpAddress, 25);
+					ImGui::Text("New Name");
+					ImGui::InputText("##NewName", m_TmpName, 25);
+					ImGui::Text("New Address");
+					ImGui::InputText("##NewAddress", m_TmpAddress, 25);
+					if (ImGui::Button("Get Original Data"))
+					{
+						std::string& name = student.GetName();
+						std::string& address = student.GetAddress();
+						memcpy_s(m_TmpName, 25, name.c_str(), name.length());
+						memcpy_s(m_TmpAddress, 25, address.c_str(), address.length());
+					}
+					ImGui::SameLine();
 					if (ImGui::Button("Apply Edits"))
 					{
 						if (m_TmpName[0] == '\0' || m_TmpAddress[0] == '\0')
@@ -58,7 +69,7 @@ void cms::UI::StudentsPanel::DrawTable(int _class)
 					ImGui::TreePop();
 				}
 				ImGui::Separator();
-				if (ImGui::TreeNodeEx("Remove Student"))
+				if (ImGui::TreeNodeEx("Remove Student", ImGuiTreeNodeFlags_Framed))
 				{
 					ImGui::Text("The Following Student Will Be Removed");
 					ImGui::Text(registry.GetStudentAt(row).GetName().c_str());
@@ -71,6 +82,11 @@ void cms::UI::StudentsPanel::DrawTable(int _class)
 						ImGui::CloseCurrentPopup();
 					}
 					ImGui::TreePop();
+				}
+				ImGui::Separator();
+				if (ImGui::IsKeyPressed(ImGuiKey_Escape, false))
+				{
+					ImGui::CloseCurrentPopup();
 				}
 				ImGui::EndPopup();
 			}
