@@ -26,7 +26,7 @@ void cms::UI::AdmissionPanel::ClearTempValues()
 
 void cms::UI::AdmissionPanel::Draw()
 {
-	ImGui::Begin("Admission", &m_PanelEnabled);
+	ImGui::Begin("Admission", (bool*)0);
 
 	ImGui::Text("Name : ");
 	ImGui::InputText("##Name", m_TmpName, 25);

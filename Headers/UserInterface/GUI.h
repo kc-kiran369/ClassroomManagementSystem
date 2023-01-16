@@ -22,6 +22,7 @@
 #include"NavigationPanel.h"
 #include"AnnouncementPanel.h"
 #include"SettingsPanel.h"
+#include"AssignmentPanel.h"
 
 #include"Benchmark/Logger.h"
 
@@ -44,6 +45,7 @@ namespace cms::UI
 		NavigationPanel navigationPanel;
 		AnnouncementPanel announcementPanel;
 		SettingsPanel settingsPanel;
+		AssignmentPanel assignmentPanel;
 
 		void MainMenuBar();
 		void Style();

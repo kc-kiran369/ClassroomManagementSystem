@@ -2,7 +2,7 @@
 
 void cms::UI::AnnouncementPanel::Draw()
 {
-	ImGui::Begin("Announcement", &m_PanelEnabled, ImGuiWindowFlags_MenuBar);
+	ImGui::Begin("Announcement", (bool*)0, ImGuiWindowFlags_MenuBar);
 
 	if (ImGui::BeginMenuBar())
 	{

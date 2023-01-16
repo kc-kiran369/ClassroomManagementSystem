@@ -17,7 +17,7 @@ cms::UI::SettingsPanel::~SettingsPanel()
 void cms::UI::SettingsPanel::Draw()
 {
 	const bool& status = Database::SqlConnector::GetInstance().GetConnectionStatus();
-	ImGui::Begin("Settings", &m_PanelEnabled, ImGuiWindowFlags_NoCollapse);
+	ImGui::Begin("Settings", (bool*)0, ImGuiWindowFlags_NoCollapse);
 
 	if (ImGui::TreeNodeEx("Database", ImGuiTreeNodeFlags_Framed))
 	{

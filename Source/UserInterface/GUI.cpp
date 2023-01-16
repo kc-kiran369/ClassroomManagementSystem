@@ -35,6 +35,8 @@ void cms::UI::GUI::Attach(Data::StudentRegistry* registry)
 	navigationPanel.SetRegistry(m_Registry);
 	settingsPanel.SetRegistry(m_Registry);
 	announcementPanel.SetRegistry(m_Registry);
+	assignmentPanel.SetRegistry(m_Registry);
+	assignmentPanel.SetWindow(m_Window);
 
 }
 
@@ -69,6 +71,7 @@ void cms::UI::GUI::RenderUIElements()
 	navigationPanel.Draw();
 	announcementPanel.Draw();
 	settingsPanel.Draw();
+	assignmentPanel.Draw();
 }
 
 void cms::UI::GUI::SetDarkTheme()

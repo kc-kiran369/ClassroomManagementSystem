@@ -18,7 +18,7 @@ void cms::UI::DashboardPanel::SetRegistry(Data::StudentRegistry* Registry)
 
 void cms::UI::DashboardPanel::Draw()
 {
-	ImGui::Begin("Dashboard", &m_PanelEnabled);
+	ImGui::Begin("Dashboard", (bool*)0);
 
 	float values[] = {
 		m_Registry->Class09.GetTotalStudents(),

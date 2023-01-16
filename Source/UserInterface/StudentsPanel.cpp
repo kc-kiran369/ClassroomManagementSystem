@@ -112,7 +112,7 @@ void cms::UI::StudentsPanel::SetRegistry(cms::Data::StudentRegistry* Registry)
 
 void cms::UI::StudentsPanel::Draw()
 {
-	ImGui::Begin("Students", &m_PanelEnabled);
+	ImGui::Begin("Students", (bool*)0);
 
 	if (ImGui::BeginTabBar("Tab", ImGuiTabBarFlags_None))
 	{
