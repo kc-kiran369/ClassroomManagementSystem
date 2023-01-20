@@ -60,7 +60,7 @@ void cms::Data::ClassRegistry::UpdateDataWithDatabase()
 {
 	for (int i = 0; i < m_Updated.size(); i++)
 	{
-		Student student = GetStudentByRoll(m_Updated[i]);
+		Student& student = GetStudentByRoll(m_Updated[i]);
 		cms::Database::SqlConnector::GetInstance().Update(student.GetID(), student.GetName(), student.GetAddress());
 	}
 	m_Updated.clear();

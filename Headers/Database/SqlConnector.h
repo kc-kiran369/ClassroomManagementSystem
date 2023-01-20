@@ -32,8 +32,8 @@ namespace cms::Database
 
 		void ChangeServer(const char* server);
 		void ChangeUser(const char* user);
-		void ChangPassword(const char* password);
-		void ChangDatabase(const char* database);
+		void ChangePassword(const char* password);
+		void ChangeDatabase(const char* database);
 		void ChangeTable(const char* table);
 
 		void Connect();

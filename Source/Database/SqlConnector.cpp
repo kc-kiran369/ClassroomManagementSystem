@@ -22,12 +22,12 @@ void cms::Database::SqlConnector::ChangeUser(const char* user)
 	memcpy_s(m_DatabaseInfo.username, sizeof(m_DatabaseInfo.username), user, sizeof(user));
 }
 
-void cms::Database::SqlConnector::ChangPassword(const char* password)
+void cms::Database::SqlConnector::ChangePassword(const char* password)
 {
 	memcpy_s(m_DatabaseInfo.password, sizeof(m_DatabaseInfo.password), password, sizeof(password));
 }
 
-void cms::Database::SqlConnector::ChangDatabase(const char* database)
+void cms::Database::SqlConnector::ChangeDatabase(const char* database)
 {
 	memcpy_s(m_DatabaseInfo.database, sizeof(m_DatabaseInfo.database), database, sizeof(database));
 }

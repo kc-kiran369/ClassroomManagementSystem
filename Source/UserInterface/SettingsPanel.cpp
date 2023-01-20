@@ -81,6 +81,10 @@ void cms::UI::SettingsPanel::Draw()
 						m_Registry->Class11.UploadAddedDataToDatabase();
 						m_Registry->Class12.UploadAddedDataToDatabase();
 					}
+					else
+					{
+						cms::Windows::PromptBox::Open("Establish connection with database first!!", MB_OK | MB_ICONWARNING);
+					}
 				}
 				ImGui::TreePop();
 			}
@@ -99,6 +103,10 @@ void cms::UI::SettingsPanel::Draw()
 						m_Registry->Class10.SyncDeletedDataWithDatabase();
 						m_Registry->Class11.SyncDeletedDataWithDatabase();
 						m_Registry->Class12.SyncDeletedDataWithDatabase();
+					}
+					else
+					{
+						cms::Windows::PromptBox::Open("Establish connection with database first!!", MB_OK | MB_ICONWARNING);
 					}
 				}
 				ImGui::TreePop();
@@ -119,6 +127,10 @@ void cms::UI::SettingsPanel::Draw()
 						m_Registry->Class11.UpdateDataWithDatabase();
 						m_Registry->Class12.UpdateDataWithDatabase();
 					}
+					else
+					{
+						cms::Windows::PromptBox::Open("Establish connection with database first!!", MB_OK | MB_ICONWARNING);
+					}
 				}
 				ImGui::TreePop();
 			}
@@ -126,9 +138,25 @@ void cms::UI::SettingsPanel::Draw()
 			ImGui::TreePop();
 		}
 
-		if (ImGui::Button("Retrieve Data From Database"))
+		if (ImGui::TreeNodeEx("More Options", ImGuiTreeNodeFlags_Framed))
 		{
-			Database::SqlConnector::GetInstance().Retrieve(m_Registry);
+			ImGui::Text("Retrieve All Data From Database : ");
+			if (ImGui::Button("Retrieve"))
+			{
+				if (status)
+					Database::SqlConnector::GetInstance().Retrieve(m_Registry);
+				else
+					cms::Windows::PromptBox::Open("Establish connection with database first!!", MB_OK | MB_ICONWARNING);
+			}
+			ImGui::Text("Clear All Data From Database : "); 
+			if (ImGui::Button("Clear DB"))
+			{
+				if (status)
+					Database::SqlConnector::GetInstance().ClearDatabase();
+				else
+					cms::Windows::PromptBox::Open("Establish connection with database first!!", MB_OK | MB_ICONWARNING);
+			}
+			ImGui::TreePop();
 		}
 
 		ImGui::TreePop();
