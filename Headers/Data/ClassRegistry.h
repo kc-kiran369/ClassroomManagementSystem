@@ -86,9 +86,13 @@ namespace cms::Data
 			surnames.clear();
 			places.clear();
 		}
-		int RandInt(int low, int high)
+		int GetRandomInt(int low, int high)
 		{
-			return low + rand() % (high - low + 1);
+			std::random_device rd;  
+			std::mt19937 gen(rd());  
+			std::uniform_int_distribution<> dist(low, high);
+
+			return dist(gen);
 		}
 
 		std::string GetRandomText(int length)
@@ -96,7 +100,7 @@ namespace cms::Data
 			m_TmpName.clear();
 			for (int i = 0; i < length; i++)
 			{
-				m_TmpName.push_back(RandInt('a', 'z'));
+				m_TmpName.push_back(GetRandomInt('a', 'z'));
 			}
 			return m_TmpName;
 		}
@@ -105,7 +109,7 @@ namespace cms::Data
 			if (names.size() == 0)
 				return GetRandomText(6);
 			else
-				return names[RandInt(0, (int)names.size() - 1)] + " " + surnames[RandInt(0, (int)surnames.size() - 1)];
+				return names[GetRandomInt(0, (int)names.size() - 1)] + " " + surnames[GetRandomInt(0, (int)surnames.size() - 1)];
 		}
 
 		std::string GetRandomPlace()
@@ -113,7 +117,7 @@ namespace cms::Data
 			if (places.size() == 0)
 				return GetRandomText(9);
 			else
-				return places[RandInt(0, (int)places.size() - 1)];
+				return places[GetRandomInt(0, (int)places.size() - 1)];
 		}
 	};
 

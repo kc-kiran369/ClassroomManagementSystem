@@ -146,7 +146,7 @@ void cms::Data::ClassRegistry::FillWithRandomStudents()
 
 	FillRandom random;
 	int _roll = 1;
-	int _totalStudentsInThisClass = random.RandInt(20, MaxStudents);
+	int _totalStudentsInThisClass = random.GetRandomInt(20, MaxStudents);
 	for (int i = 0; i < _totalStudentsInThisClass; i++)
 	{
 		//This loop assigns roll number in ascending order
